@@ -1,0 +1,29 @@
+apply plugin: 'org.springframework.boot'
+dependencies {
+    compile project(':common:demo-auth')
+    compile project(':constant:demo-constant')
+    compile project(':service:demo-service')
+    compile project(':interface:demo-manager-interface')
+
+    compile("com.cmpay:lemon-framework-starter-cloud")
+    compile("org.springframework.data:spring-data-redis:1.8.11.RELEASE")
+    compile("org.springframework.kafka:spring-kafka:1.3.2.RELEASE")
+    compile("com.cmpay:lemon-swagger-starter")
+    compile("mysql:mysql-connector-java:8.0.15")
+
+}
+
+bootRepackage {
+    enabled = true
+    mainClass = 'com.cmpay.yx.YxApplication'
+}
+
+jar {
+    manifest {
+        attributes(
+                "Implementation-Title": "Gradle",
+                "Implementation-Version": "${version}",
+                "Class-Path": '. config/'
+        )
+    }
+}

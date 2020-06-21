@@ -1,0 +1,17 @@
+dependencies {
+    //lemon核心框架starter
+    compile("com.cmpay:lemon-framework-starter")
+    compile("org.projectlombok:lombok")
+
+
+
+}
+jar {
+    manifest {
+        attributes(
+                "Implementation-Title": "Gradle",
+                "Implementation-Version": "${version}",
+                "Class-Path": '. config/'
+        )
+    }
+}

@@ -1,0 +1,237 @@
+<configuration>
+    <springProperty scope="context" name="appName" source="spring.application.name" defaultValue="LMN"/>
+    <springProperty scope="context" name="rootLevel" source="lemon.logger.level" defaultValue="WARN"/>
+    <springProperty scope="context" name="sqlLevel" source="lemon.sql.level" defaultValue="WARN"/>
+
+    <appender name="FILE" class="ch.qos.logback.core.rolling.RollingFileAppender">
+        <file>${lemon.log.path}/lemon-${appName}.log</file>
+        <rollingPolicy class="ch.qos.logback.core.rolling.SizeAndTimeBasedRollingPolicy">
+            <fileNamePattern>${lemon.log.path}/lemon-${appName}-%d{yyyyMMdd}.%i.log</fileNamePattern>
+            <maxFileSize>20MB</maxFileSize>
+        </rollingPolicy>
+        <encoder>
+            <pattern>%d %-5level [%-18.18thread] %-36logger{36} - [%X{requestId:-SYSTEM}]: %msg%n</pattern>
+        </encoder>
+    </appender>
+
+    <appender name="FILE-ASYNC" class="ch.qos.logback.classic.AsyncAppender">
+        <discardingThreshold>0</discardingThreshold>
+        <queueSize>10240</queueSize>
+        <appender-ref ref="FILE"/>
+    </appender>
+
+    <appender name="STDOUT" class="ch.qos.logback.core.ConsoleAppender">
+        <!-- 该Filter 不要配置到生产，仅仅用于调试环境，用于禁止eureka订阅服务日志干扰调试
+        <filter class="com.hisun.lemon.framework.log.logback.TestFilter" />
+        -->
+        <encoder>
+            <pattern>%d %-5level [%-18.18thread] %-36logger{36} - [%X{requestId:-SYSTEM}]: %msg%n</pattern>
+        </encoder>
+    </appender>
+
+    <appender name="ERROR-FILE" class="ch.qos.logback.core.rolling.RollingFileAppender">
+        <file>${lemon.log.path}/error-${appName}.log</file>
+        <rollingPolicy class="ch.qos.logback.core.rolling.SizeAndTimeBasedRollingPolicy">
+            <fileNamePattern>${lemon.log.path}/error-${appName}-%d{yyyyMMdd}.%i.log</fileNamePattern>
+            <maxFileSize>20MB</maxFileSize>
+        </rollingPolicy>
+        <encoder>
+            <pattern>%d %-5level [%-18.18thread] %-36logger{36} - [%X{requestId:-SYSTEM}]: %msg%n</pattern>
+        </encoder>
+        <filter class="ch.qos.logback.classic.filter.LevelFilter">
+            <level>ERROR</level>
+            <onMatch>ACCEPT</onMatch>
+            <onMismatch>DENY</onMismatch>
+        </filter>
+    </appender>
+
+    <appender name="FILE-CLIENT" class="ch.qos.logback.core.rolling.RollingFileAppender">
+        <file>${lemon.log.path}/client-${appName}.log</file>
+        <rollingPolicy class="ch.qos.logback.core.rolling.SizeAndTimeBasedRollingPolicy">
+            <fileNamePattern>${lemon.log.path}/client-${appName}-%d{yyyyMMdd}.%i.log</fileNamePattern>
+            <maxFileSize>20MB</maxFileSize>
+        </rollingPolicy>
+        <encoder>
+            <pattern>%d %-5level [%-18.18thread] - [%X{requestId:-SYSTEM}]: %msg%n</pattern>
+        </encoder>
+    </appender>
+
+    <appender name="FILE-CLIENT-ASYNC" class="ch.qos.logback.classic.AsyncAppender">
+        <discardingThreshold>0</discardingThreshold>
+        <queueSize>10240</queueSize>
+        <appender-ref ref="FILE-CLIENT"/>
+    </appender>
+
+    <appender name="FILE-ACCESS" class="ch.qos.logback.core.rolling.RollingFileAppender">
+        <file>${lemon.log.path}/access-${appName}.log</file>
+        <rollingPolicy class="ch.qos.logback.core.rolling.SizeAndTimeBasedRollingPolicy">
+            <fileNamePattern>${lemon.log.path}/access-${appName}-%d{yyyyMMdd}.%i.log</fileNamePattern>
+            <maxFileSize>20MB</maxFileSize>
+        </rollingPolicy>
+        <encoder>
+            <pattern>%d %-5level [%-18.18thread] - [%X{requestId:-SYSTEM}]: %msg%n</pattern>
+        </encoder>
+    </appender>
+
+    <appender name="FILE-ACCESS-ASYNC" class="ch.qos.logback.classic.AsyncAppender">
+        <discardingThreshold>0</discardingThreshold>
+        <queueSize>10240</queueSize>
+        <appender-ref ref="FILE-ACCESS"/>
+    </appender>
+
+    <appender name="FILE-STREAM-CONSUMER" class="ch.qos.logback.core.rolling.RollingFileAppender">
+        <file>${lemon.log.path}/stream-consumer-${appName}.log</file>
+        <rollingPolicy class="ch.qos.logback.core.rolling.SizeAndTimeBasedRollingPolicy">
+            <fileNamePattern>${lemon.log.path}/stream-consumer-${appName}-%d{yyyyMMdd}.%i.log</fileNamePattern>
+            <maxFileSize>20MB</maxFileSize>
+        </rollingPolicy>
+        <encoder>
+            <pattern>%d %-5level [%-18.18thread] - [%X{requestId:-SYSTEM}]: %msg%n</pattern>
+        </encoder>
+    </appender>
+
+    <appender name="FILE-STREAM-CONSUMER-ASYNC" class="ch.qos.logback.classic.AsyncAppender">
+        <discardingThreshold>0</discardingThreshold>
+        <queueSize>10240</queueSize>
+        <appender-ref ref="FILE-STREAM-CONSUMER"/>
+    </appender>
+
+    <appender name="FILE-STREAM-PRODUCER" class="ch.qos.logback.core.rolling.RollingFileAppender">
+        <file>${lemon.log.path}/stream-producer-${appName}.log</file>
+        <rollingPolicy class="ch.qos.logback.core.rolling.SizeAndTimeBasedRollingPolicy">
+            <fileNamePattern>${lemon.log.path}/stream-producer-${appName}-%d{yyyyMMdd}.%i.log</fileNamePattern>
+            <maxFileSize>20MB</maxFileSize>
+        </rollingPolicy>
+        <encoder>
+            <pattern>%d %-5level [%-18.18thread] - [%X{requestId:-SYSTEM}]: %msg%n</pattern>
+        </encoder>
+    </appender>
+
+    <appender name="FILE-STREAM-PRODUCER-ASYNC" class="ch.qos.logback.classic.AsyncAppender">
+        <discardingThreshold>0</discardingThreshold>
+        <queueSize>10240</queueSize>
+        <appender-ref ref="FILE-STREAM-PRODUCER"/>
+    </appender>
+
+    <appender name="FILE-ICS-INVOKER-ACCESS" class="ch.qos.logback.core.rolling.RollingFileAppender">
+        <file>${lemon.log.path}/ics-invoker-${appName}.log</file>
+        <rollingPolicy class="ch.qos.logback.core.rolling.SizeAndTimeBasedRollingPolicy">
+            <fileNamePattern>${lemon.log.path}/ics-invoker-${appName}-%d{yyyyMMdd}.%i.log</fileNamePattern>
+            <maxFileSize>20MB</maxFileSize>
+        </rollingPolicy>
+        <encoder>
+            <pattern>%d %-5level [%-18.18thread] - [%X{requestId:-SYSTEM}]: %msg%n</pattern>
+        </encoder>
+    </appender>
+
+    <appender name="FILE-ICS-INVOKER-ACCESS-ASYNC" class="ch.qos.logback.classic.AsyncAppender">
+        <discardingThreshold>0</discardingThreshold>
+        <queueSize>10240</queueSize>
+        <appender-ref ref="FILE-ICS-INVOKER-ACCESS"/>
+    </appender>
+
+    <appender name="FILE-ICS-ASYNC-INVOKER-ACCESS" class="ch.qos.logback.core.rolling.RollingFileAppender">
+        <file>${lemon.log.path}/ics-async-invoker-${appName}.log</file>
+        <rollingPolicy class="ch.qos.logback.core.rolling.SizeAndTimeBasedRollingPolicy">
+            <fileNamePattern>${lemon.log.path}/ics-async-invoker-${appName}-%d{yyyyMMdd}.%i.log</fileNamePattern>
+            <maxFileSize>20MB</maxFileSize>
+        </rollingPolicy>
+        <encoder>
+            <pattern>%d %-5level [%-18.18thread] - [%X{requestId:-SYSTEM}]: %msg%n</pattern>
+        </encoder>
+    </appender>
+
+    <appender name="FILE-ICS-ASYNC-INVOKER-ACCESS-ASYNC" class="ch.qos.logback.classic.AsyncAppender">
+        <discardingThreshold>0</discardingThreshold>
+        <queueSize>10240</queueSize>
+        <appender-ref ref="FILE-ICS-ASYNC-INVOKER-ACCESS"/>
+    </appender>
+
+    <appender name="FILE-SWORDRISK-INVOKER-ACCESS" class="ch.qos.logback.core.rolling.RollingFileAppender">
+        <file>${lemon.log.path}/swordrisk-invoker-${appName}.log</file>
+        <rollingPolicy class="ch.qos.logback.core.rolling.SizeAndTimeBasedRollingPolicy">
+            <fileNamePattern>${lemon.log.path}/swordrisk-invoker-${appName}-%d{yyyyMMdd}.%i.log</fileNamePattern>
+            <maxFileSize>20MB</maxFileSize>
+        </rollingPolicy>
+        <encoder>
+            <pattern>%d %-5level [%-18.18thread] - [%X{requestId:-SYSTEM}]: %msg%n</pattern>
+        </encoder>
+    </appender>
+
+    <appender name="FILE-SWORDRISK-INVOKER-ACCESS-ASYNC" class="ch.qos.logback.classic.AsyncAppender">
+        <discardingThreshold>0</discardingThreshold>
+        <queueSize>10240</queueSize>
+        <appender-ref ref="FILE-SWORDRISK-INVOKER-ACCESS"/>
+    </appender>
+
+    <appender name="FILE-TXNPLTE" class="ch.qos.logback.core.rolling.RollingFileAppender">
+        <file>${lemon.log.path}/txnPlte-${appName}.log</file>
+        <rollingPolicy class="ch.qos.logback.core.rolling.SizeAndTimeBasedRollingPolicy">
+            <fileNamePattern>${lemon.log.path}/txnPlte-${appName}-%d{yyyyMMdd}.%i.log</fileNamePattern>
+            <maxFileSize>20MB</maxFileSize>
+        </rollingPolicy>
+        <encoder>
+            <pattern>%d{"MM-dd HH:mm:ss,SSS"} %-5level - %msg%n</pattern>
+        </encoder>
+    </appender>
+
+    <appender name="FILE-TXNPLTE-ASYNC" class="ch.qos.logback.classic.AsyncAppender">
+        <discardingThreshold>0</discardingThreshold>
+        <queueSize>10240</queueSize>
+        <appender-ref ref="FILE-TXNPLTE"/>
+    </appender>
+
+    <logger name="com.cmpay.lemon.framework.springcloud.fegin" level="INFO" additivity="false">
+        <appender-ref ref="FILE-CLIENT-ASYNC"/>
+    </logger>
+
+    <logger name="com.netflix.loadbalancer.LoadBalancerContext" level="DEBUG" additivity="false">
+        <appender-ref ref="FILE-CLIENT-ASYNC"/>
+    </logger>
+
+    <logger name="webRequestAccessLogger" level="INFO" additivity="false">
+        <appender-ref ref="FILE-ACCESS-ASYNC"/>
+    </logger>
+
+    <logger name="org.springframework.amqp.rabbit.listener.BlockingQueueConsumer" level="INFO" additivity="false">
+        <appender-ref ref="FILE-STREAM-CONSUMER-ASYNC"/>
+    </logger>
+
+    <logger name="com.cmpay.lemon.framework.stream.consumer.DefaultInputConsumer" level="INFO" additivity="false">
+        <appender-ref ref="FILE-STREAM-CONSUMER-ASYNC"/>
+    </logger>
+
+    <logger name="com.cmpay.lemon.framework.stream.logging.SimpleOutputLogger" level="INFO" additivity="false">
+        <appender-ref ref="FILE-STREAM-PRODUCER-ASYNC"/>
+    </logger>
+
+    <!-- print sql -->
+    <logger name="com.cmpay.test.dao" level="${sqlLevel}" additivity="true">
+    </logger>
+
+    <logger name="icsInvokerLogger" level="INFO" additivity="false">
+        <appender-ref ref="FILE-ICS-INVOKER-ACCESS-ASYNC"/>
+    </logger>
+
+    <logger name="icsAsyncInvokerLogger" level="INFO" additivity="false">
+        <appender-ref ref="FILE-ICS-ASYNC-INVOKER-ACCESS-ASYNC"/>
+    </logger>
+
+    <logger name="swordRiskInvokerLogger" level="INFO" additivity="false">
+        <appender-ref ref="FILE-SWORDRISK-INVOKER-ACCESS-ASYNC"/>
+    </logger>
+
+    <logger name="pxnPlteLogger" level="INFO" additivity="false">
+        <appender-ref ref="FILE-TXNPLTE-ASYNC"/>
+    </logger>
+
+    <root level="${rootLevel}">
+        <springProfile name="ci, dev, sit, uat, str, pre, prd">
+            <appender-ref ref="FILE-ASYNC"/>
+            <appender-ref ref="ERROR-FILE"/>
+        </springProfile>
+        <springProfile name="uat,dev,sit">
+            <appender-ref ref="STDOUT"/>
+        </springProfile>
+    </root>
+</configuration>

@@ -1,0 +1,36 @@
+eureka:
+  client:
+    registerWithEureka: true
+    serviceUrl:
+      zone1: http://134.175.174.116:9002/eureka/
+spring:
+  redis:
+    cluster:
+      nodes: 134.175.174.116:7000,134.175.174.116:7001,134.175.174.116:7002,134.175.174.116:7003,134.175.174.116:7004,134.175.174.116:7005
+    password:  'foobared'
+
+lemon:
+  alerting:
+    source: redis
+    internal: true #对内或对外服务，相当于以前的gatewayEnable
+    redis:
+      cluster:
+        nodes: 134.175.174.116:7000,134.175.174.116:7001,134.175.174.116:7002,134.175.174.116:7003,134.175.174.116:7004,134.175.174.116:7005
+      password: 'foobared'
+  dataSources:
+    primary:
+      type: com.alibaba.druid.pool.DruidDataSource
+      driverClassName: com.mysql.cj.jdbc.Driver
+      url: jdbc:mysql://127.0.0.1:3306/hisuntest?serverTimezone=Asia/Shanghai
+      username: root
+      password: 'root'
+  idgen:
+    redis:
+      password: 'foobared'
+      cluster:
+        nodes: 134.175.174.116:7000,134.175.174.116:7001,134.175.174.116:7002,134.175.174.116:7003,134.175.174.116:7004,134.175.174.116:7005
+  cache:
+    redis:
+      password: 'foobared'
+      cluster:
+        nodes: 134.175.174.116:7000,134.175.174.116:7001,134.175.174.116:7002,134.175.174.116:7003,134.175.174.116:7004,134.175.174.116:7005
