@@ -8,7 +8,8 @@ import org.springframework.context.annotation.Configuration;
 import java.util.Optional;
 
 /**
- *li_hq
+ *
+ * @author Administrator
  */
 @Configuration
 public class LoginConfiguration {

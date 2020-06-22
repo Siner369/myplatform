@@ -1,9 +1,11 @@
 dependencies {
-    
+    // 导入其他模块
+    compile project(':service:demo-service')
+    compile project(':constant:demo-constant')
     //登录权限效验包
     compile("com.cmpay:lemon-framework-web")
     compile("com.cmpay:lemon-framework-starter-session")
     compile("com.cmpay:lemon-framework-starter-security")
     compile("com.cmpay:lemon-framework-starter-security-refresh")
-    
+
 }

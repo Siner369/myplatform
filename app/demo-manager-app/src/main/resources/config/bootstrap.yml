@@ -89,7 +89,7 @@ lemon:
       principalNameExpression: username
     #认证地址
     authentication:
-      loginPathPrefix: /v1/bui/login              #默认 /security/login
+      loginPathPrefix: /user/login              #默认 /security/login
       refreshPath: /v1/bui/refresh                #默认 /security/refresh
       logoutPath: /v1/bui/logout                  #默认 /security/logout
     authorizeRequests:
@@ -98,6 +98,7 @@ lemon:
         - /upms/v1/captcha/getCaptcha
         - /user/info
         - /user/getAllUser
+        - /user/inserUser
   #Multiple dataSources
   dataSources:
     primary:

@@ -21,4 +21,18 @@ public interface UserService {
      * @return
      */
     UserInfoBO login(UserInfoBO userInfoBO);
+
+    /**
+     * 新增用户方法
+     * @param userInfoBO
+     * @return
+     */
+    int insertUser(UserInfoBO userInfoBO);
+
+    /**
+     * 根据ID找用户
+     * @param uid
+     * @return
+     */
+    UserDO getUserByUid(Long uid);
 }

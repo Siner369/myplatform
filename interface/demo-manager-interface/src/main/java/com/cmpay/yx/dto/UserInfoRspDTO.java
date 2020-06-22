@@ -15,7 +15,10 @@ public class UserInfoRspDTO {
      * @Fields username 用户名
      */
     private String username;
-
+    /**
+     * @Fields name 姓名
+     */
+    private String name;
     /**
      * @Fields email 邮箱
      */

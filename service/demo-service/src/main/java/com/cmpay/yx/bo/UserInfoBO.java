@@ -24,6 +24,10 @@ public class UserInfoBO {
      */
     private String password;
     /**
+     * @Fields name 姓名
+     */
+    private String name;
+    /**
      * @Fields email 邮箱
      */
     private String email;

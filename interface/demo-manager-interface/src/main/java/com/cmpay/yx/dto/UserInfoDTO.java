@@ -16,7 +16,14 @@ public class UserInfoDTO {
      * @Fields username 用户名
      */
     private String username;
-
+    /**
+     * @Fields password 密码
+     */
+    private String password;
+    /**
+     * @Fields name 姓名
+     */
+    private String name;
     /**
      * @Fields email 邮箱
      */
