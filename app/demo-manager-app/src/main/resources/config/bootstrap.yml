@@ -97,14 +97,15 @@ lemon:
       permitAll:
         - /upms/v1/captcha/getCaptcha
         - /user/info
+        - /user/getAllUser
   #Multiple dataSources
   dataSources:
     primary:
       type: com.alibaba.druid.pool.DruidDataSource
       driverClassName: com.mysql.cj.jdbc.Driver
-      url: jdbc:mysql://127.0.0.1:3306/monitoring
-      username: monadm
-      password:
+      url: jdbc:mysql://127.0.0.1:3306/hisuntest
+      username: root
+      password: 'root'
   #dynamic datasource
   dynamicDataSource:
     enabled: true

@@ -1,8 +1,0 @@
-<?xml version="1.0" encoding="UTF-8" ?>
-<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
-<mapper namespace="com.cmpay.yx.dao.RoleDao" >
-    <sql id="Base_Column_List">
-            rid, role_name, role_note, create_user_no, create_time, update_user_no
-            , update_time, update_time, is_use
-    </sql>
-</mapper>

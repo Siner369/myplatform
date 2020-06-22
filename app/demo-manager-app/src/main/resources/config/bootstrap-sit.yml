@@ -1,0 +1,34 @@
+eureka:
+  client:
+    registerWithEureka: false
+    serviceUrl:
+      zone-csse2x: http://172.16.49.77:9002/eureka/
+spring:
+  redis:
+    cluster:
+      nodes: 172.16.49.135:6679,172.16.49.135:6680,172.16.49.136:6679,172.16.49.136:6680,172.16.49.137:6679,172.16.49.137:6680
+    password:  'foobared'
+
+lemon:
+  alerting:
+    source: redis
+    internal: true #对内或对外服务，相当于以前的gatewayEnable
+    redis:
+      cluster:
+        nodes: 172.16.49.135:6679,172.16.49.135:6680,172.16.49.136:6679,172.16.49.136:6680,172.16.49.137:6679,172.16.49.137:6680
+      password: 'foobared'
+  dataSources:
+    primary:
+      url: jdbc:mysql://127.0.0.1:3306/hisuntest?serverTimezone=Asia/Shanghai
+      username: root
+      password: 'root'
+  idgen:
+    redis:
+      password: 'foobared'
+      cluster:
+        nodes: 172.16.49.135:6679,172.16.49.135:6680,172.16.49.136:6679,172.16.49.136:6680,172.16.49.137:6679,172.16.49.137:6680
+  cache:
+    redis:
+      password: 'foobared'
+      cluster:
+        nodes: 172.16.49.135:6679,172.16.49.135:6680,172.16.49.136:6679,172.16.49.136:6680,172.16.49.137:6679,172.16.49.137:6680
