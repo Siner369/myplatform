@@ -1,0 +1,148 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.cmpay.yx.dao.IRoleDao" >
+
+    <resultMap id="BaseResultMap" type="com.cmpay.yx.entity.RoleDO" >
+        <id column="rid" property="rid" jdbcType="BIGINT" />
+        <result column="role_name" property="roleName" jdbcType="VARCHAR" />
+        <result column="role_note" property="roleNote" jdbcType="VARCHAR" />
+        <result column="create_user_no" property="createUserNo" jdbcType="BIGINT" />
+        <result column="create_time" property="createTime" jdbcType="TIMESTAMP" />
+        <result column="update_user_no" property="updateUserNo" jdbcType="BIGINT" />
+        <result column="update_time" property="updateTime" jdbcType="TIMESTAMP" />
+        <result column="is_use" property="isUse" jdbcType="BIT" />
+    </resultMap>
+
+    <sql id="Base_Column_List" >
+        rid, role_name, role_note, create_user_no, create_time, update_user_no, update_time, 
+        is_use
+    </sql>
+
+    <select id="selectAllRole" resultMap="BaseResultMap" parameterType="java.lang.Long" >
+        select 
+        <include refid="Base_Column_List" />
+        from role
+        where is_use = 1
+    </select>
+
+    <delete id="delete" parameterType="java.lang.Long" >
+        delete from role
+        where rid = #{rid,jdbcType=BIGINT}
+    </delete>
+
+    <insert id="insert" parameterType="com.cmpay.yx.entity.RoleDO" >
+        insert into role
+        <trim prefix="(" suffix=")" suffixOverrides="," >
+            <if test="rid != null" >
+                rid,
+            </if>
+            <if test="roleName != null" >
+                role_name,
+            </if>
+            <if test="roleNote != null" >
+                role_note,
+            </if>
+            <if test="createUserNo != null" >
+                create_user_no,
+            </if>
+            <if test="createTime != null" >
+                create_time,
+            </if>
+            <if test="updateUserNo != null" >
+                update_user_no,
+            </if>
+            <if test="updateTime != null" >
+                update_time,
+            </if>
+            <if test="isUse != null" >
+                is_use,
+            </if>
+        </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides="," >
+            <if test="rid != null" >
+                #{rid,jdbcType=BIGINT},
+            </if>
+            <if test="roleName != null" >
+                #{roleName,jdbcType=VARCHAR},
+            </if>
+            <if test="roleNote != null" >
+                #{roleNote,jdbcType=VARCHAR},
+            </if>
+            <if test="createUserNo != null" >
+                #{createUserNo,jdbcType=BIGINT},
+            </if>
+            <if test="createTime != null" >
+                #{createTime,jdbcType=TIMESTAMP},
+            </if>
+            <if test="updateUserNo != null" >
+                #{updateUserNo,jdbcType=BIGINT},
+            </if>
+            <if test="updateTime != null" >
+                #{updateTime,jdbcType=TIMESTAMP},
+            </if>
+            <if test="isUse != null" >
+                #{isUse,jdbcType=BIT},
+            </if>
+        </trim>
+    </insert>
+
+    <update id="update" parameterType="com.cmpay.yx.entity.RoleDO" >
+        update role
+        <set >
+            <if test="roleName != null" >
+                role_name = #{roleName,jdbcType=VARCHAR},
+            </if>
+            <if test="roleNote != null" >
+                role_note = #{roleNote,jdbcType=VARCHAR},
+            </if>
+            <if test="createUserNo != null" >
+                create_user_no = #{createUserNo,jdbcType=BIGINT},
+            </if>
+            <if test="createTime != null" >
+                create_time = #{createTime,jdbcType=TIMESTAMP},
+            </if>
+            <if test="updateUserNo != null" >
+                update_user_no = #{updateUserNo,jdbcType=BIGINT},
+            </if>
+            <if test="updateTime != null" >
+                update_time = #{updateTime,jdbcType=TIMESTAMP},
+            </if>
+            <if test="isUse != null" >
+                is_use = #{isUse,jdbcType=BIT},
+            </if>
+        </set>
+        where rid = #{rid,jdbcType=BIGINT}
+    </update>
+
+    <select id="find" resultMap="BaseResultMap" parameterType="com.cmpay.yx.entity.RoleDO" >
+        select 
+        <include refid="Base_Column_List" />
+        from role
+        <where >
+            <if test="rid != null" >
+                and rid = #{rid,jdbcType=BIGINT}
+            </if>
+            <if test="roleName != null" >
+                and role_name = #{roleName,jdbcType=VARCHAR}
+            </if>
+            <if test="roleNote != null" >
+                and role_note = #{roleNote,jdbcType=VARCHAR}
+            </if>
+            <if test="createUserNo != null" >
+                and create_user_no = #{createUserNo,jdbcType=BIGINT}
+            </if>
+            <if test="createTime != null" >
+                and create_time = #{createTime,jdbcType=TIMESTAMP}
+            </if>
+            <if test="updateUserNo != null" >
+                and update_user_no = #{updateUserNo,jdbcType=BIGINT}
+            </if>
+            <if test="updateTime != null" >
+                and update_time = #{updateTime,jdbcType=TIMESTAMP}
+            </if>
+            <if test="isUse != null" >
+                and is_use = #{isUse,jdbcType=BIT}
+            </if>
+        </where>
+    </select>
+</mapper>

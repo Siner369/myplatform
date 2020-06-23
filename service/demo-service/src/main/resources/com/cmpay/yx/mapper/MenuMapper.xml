@@ -1,0 +1,213 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.cmpay.yx.dao.IMenuDao" >
+
+    <resultMap id="BaseResultMap" type="com.cmpay.yx.entity.MenuDO" >
+        <id column="mid" property="mid" jdbcType="BIGINT" />
+        <result column="menu_type" property="menuType" jdbcType="VARCHAR" />
+        <result column="super_menu_id" property="superMenuId" jdbcType="INTEGER" />
+        <result column="menu_name" property="menuName" jdbcType="VARCHAR" />
+        <result column="menu_link" property="menuLink" jdbcType="VARCHAR" />
+        <result column="redirect" property="redirect" jdbcType="VARCHAR" />
+        <result column="menu_english_name" property="menuEnglishName" jdbcType="VARCHAR" />
+        <result column="auth_mark" property="authMark" jdbcType="VARCHAR" />
+        <result column="create_user_no" property="createUserNo" jdbcType="BIGINT" />
+        <result column="create_time" property="createTime" jdbcType="TIMESTAMP" />
+        <result column="update_user_no" property="updateUserNo" jdbcType="BIGINT" />
+        <result column="update_time" property="updateTime" jdbcType="TIMESTAMP" />
+        <result column="is_use" property="isUse" jdbcType="BIT" />
+    </resultMap>
+
+    <sql id="Base_Column_List" >
+        mid, menu_type, super_menu_id, menu_name, menu_link, redirect, menu_english_name, 
+        auth_mark, create_user_no, create_time, update_user_no, update_time, is_use
+    </sql>
+
+    <select id="get" resultMap="BaseResultMap" parameterType="java.lang.Long" >
+        select 
+        <include refid="Base_Column_List" />
+        from menu
+        where mid = #{mid,jdbcType=BIGINT}
+    </select>
+
+    <delete id="delete" parameterType="java.lang.Long" >
+        delete from menu
+        where mid = #{mid,jdbcType=BIGINT}
+    </delete>
+
+    <insert id="insert" parameterType="com.cmpay.yx.entity.MenuDO" >
+        insert into menu
+        <trim prefix="(" suffix=")" suffixOverrides="," >
+            <if test="mid != null" >
+                mid,
+            </if>
+            <if test="menuType != null" >
+                menu_type,
+            </if>
+            <if test="superMenuId != null" >
+                super_menu_id,
+            </if>
+            <if test="menuName != null" >
+                menu_name,
+            </if>
+            <if test="menuLink != null" >
+                menu_link,
+            </if>
+            <if test="redirect != null" >
+                redirect,
+            </if>
+            <if test="menuEnglishName != null" >
+                menu_english_name,
+            </if>
+            <if test="authMark != null" >
+                auth_mark,
+            </if>
+            <if test="createUserNo != null" >
+                create_user_no,
+            </if>
+            <if test="createTime != null" >
+                create_time,
+            </if>
+            <if test="updateUserNo != null" >
+                update_user_no,
+            </if>
+            <if test="updateTime != null" >
+                update_time,
+            </if>
+            <if test="isUse != null" >
+                is_use,
+            </if>
+        </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides="," >
+            <if test="mid != null" >
+                #{mid,jdbcType=BIGINT},
+            </if>
+            <if test="menuType != null" >
+                #{menuType,jdbcType=VARCHAR},
+            </if>
+            <if test="superMenuId != null" >
+                #{superMenuId,jdbcType=INTEGER},
+            </if>
+            <if test="menuName != null" >
+                #{menuName,jdbcType=VARCHAR},
+            </if>
+            <if test="menuLink != null" >
+                #{menuLink,jdbcType=VARCHAR},
+            </if>
+            <if test="redirect != null" >
+                #{redirect,jdbcType=VARCHAR},
+            </if>
+            <if test="menuEnglishName != null" >
+                #{menuEnglishName,jdbcType=VARCHAR},
+            </if>
+            <if test="authMark != null" >
+                #{authMark,jdbcType=VARCHAR},
+            </if>
+            <if test="createUserNo != null" >
+                #{createUserNo,jdbcType=BIGINT},
+            </if>
+            <if test="createTime != null" >
+                #{createTime,jdbcType=TIMESTAMP},
+            </if>
+            <if test="updateUserNo != null" >
+                #{updateUserNo,jdbcType=BIGINT},
+            </if>
+            <if test="updateTime != null" >
+                #{updateTime,jdbcType=TIMESTAMP},
+            </if>
+            <if test="isUse != null" >
+                #{isUse,jdbcType=BIT},
+            </if>
+        </trim>
+    </insert>
+
+    <update id="update" parameterType="com.cmpay.yx.entity.MenuDO" >
+        update menu
+        <set >
+            <if test="menuType != null" >
+                menu_type = #{menuType,jdbcType=VARCHAR},
+            </if>
+            <if test="superMenuId != null" >
+                super_menu_id = #{superMenuId,jdbcType=INTEGER},
+            </if>
+            <if test="menuName != null" >
+                menu_name = #{menuName,jdbcType=VARCHAR},
+            </if>
+            <if test="menuLink != null" >
+                menu_link = #{menuLink,jdbcType=VARCHAR},
+            </if>
+            <if test="redirect != null" >
+                redirect = #{redirect,jdbcType=VARCHAR},
+            </if>
+            <if test="menuEnglishName != null" >
+                menu_english_name = #{menuEnglishName,jdbcType=VARCHAR},
+            </if>
+            <if test="authMark != null" >
+                auth_mark = #{authMark,jdbcType=VARCHAR},
+            </if>
+            <if test="createUserNo != null" >
+                create_user_no = #{createUserNo,jdbcType=BIGINT},
+            </if>
+            <if test="createTime != null" >
+                create_time = #{createTime,jdbcType=TIMESTAMP},
+            </if>
+            <if test="updateUserNo != null" >
+                update_user_no = #{updateUserNo,jdbcType=BIGINT},
+            </if>
+            <if test="updateTime != null" >
+                update_time = #{updateTime,jdbcType=TIMESTAMP},
+            </if>
+            <if test="isUse != null" >
+                is_use = #{isUse,jdbcType=BIT},
+            </if>
+        </set>
+        where mid = #{mid,jdbcType=BIGINT}
+    </update>
+
+    <select id="find" resultMap="BaseResultMap" parameterType="com.cmpay.yx.entity.MenuDO" >
+        select 
+        <include refid="Base_Column_List" />
+        from menu
+        <where >
+            <if test="mid != null" >
+                and mid = #{mid,jdbcType=BIGINT}
+            </if>
+            <if test="menuType != null" >
+                and menu_type = #{menuType,jdbcType=VARCHAR}
+            </if>
+            <if test="superMenuId != null" >
+                and super_menu_id = #{superMenuId,jdbcType=INTEGER}
+            </if>
+            <if test="menuName != null" >
+                and menu_name = #{menuName,jdbcType=VARCHAR}
+            </if>
+            <if test="menuLink != null" >
+                and menu_link = #{menuLink,jdbcType=VARCHAR}
+            </if>
+            <if test="redirect != null" >
+                and redirect = #{redirect,jdbcType=VARCHAR}
+            </if>
+            <if test="menuEnglishName != null" >
+                and menu_english_name = #{menuEnglishName,jdbcType=VARCHAR}
+            </if>
+            <if test="authMark != null" >
+                and auth_mark = #{authMark,jdbcType=VARCHAR}
+            </if>
+            <if test="createUserNo != null" >
+                and create_user_no = #{createUserNo,jdbcType=BIGINT}
+            </if>
+            <if test="createTime != null" >
+                and create_time = #{createTime,jdbcType=TIMESTAMP}
+            </if>
+            <if test="updateUserNo != null" >
+                and update_user_no = #{updateUserNo,jdbcType=BIGINT}
+            </if>
+            <if test="updateTime != null" >
+                and update_time = #{updateTime,jdbcType=TIMESTAMP}
+            </if>
+            <if test="isUse != null" >
+                and is_use = #{isUse,jdbcType=BIT}
+            </if>
+        </where>
+    </select>
+</mapper>

@@ -1,0 +1,165 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.cmpay.yx.dao.IUserRoleDao" >
+
+    <resultMap id="BaseResultMap" type="com.cmpay.yx.entity.UserRoleDO" >
+        <id column="user_role_id" property="userRoleId" jdbcType="BIGINT" />
+        <result column="uid" property="uid" jdbcType="BIGINT" />
+        <result column="rid" property="rid" jdbcType="BIGINT" />
+        <result column="create_user_no" property="createUserNo" jdbcType="BIGINT" />
+        <result column="create_time" property="createTime" jdbcType="TIMESTAMP" />
+        <result column="update_user_no" property="updateUserNo" jdbcType="BIGINT" />
+        <result column="update_time" property="updateTime" jdbcType="TIMESTAMP" />
+        <result column="is_use" property="isUse" jdbcType="BIT" />
+    </resultMap>
+
+    <sql id="Base_Column_List" >
+        user_role_id, uid, rid, create_user_no, create_time, update_user_no, update_time, 
+        is_use
+    </sql>
+
+    <select id="get" resultMap="BaseResultMap" parameterType="java.lang.Long" >
+        select 
+        <include refid="Base_Column_List" />
+        from user_role
+        where user_role_id = #{userRoleId,jdbcType=BIGINT}
+    </select>
+
+    <delete id="delete" parameterType="java.lang.Long" >
+        delete from user_role
+        where user_role_id = #{userRoleId,jdbcType=BIGINT}
+    </delete>
+
+    <insert id="insert" parameterType="com.cmpay.yx.entity.UserRoleDO" >
+        insert into user_role
+        <trim prefix="(" suffix=")" suffixOverrides="," >
+            <if test="userRoleId != null" >
+                user_role_id,
+            </if>
+            <if test="uid != null" >
+                uid,
+            </if>
+            <if test="rid != null" >
+                rid,
+            </if>
+            <if test="createUserNo != null" >
+                create_user_no,
+            </if>
+            <if test="createTime != null" >
+                create_time,
+            </if>
+            <if test="updateUserNo != null" >
+                update_user_no,
+            </if>
+            <if test="updateTime != null" >
+                update_time,
+            </if>
+            <if test="isUse != null" >
+                is_use,
+            </if>
+        </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides="," >
+            <if test="userRoleId != null" >
+                #{userRoleId,jdbcType=BIGINT},
+            </if>
+            <if test="uid != null" >
+                #{uid,jdbcType=BIGINT},
+            </if>
+            <if test="rid != null" >
+                #{rid,jdbcType=BIGINT},
+            </if>
+            <if test="createUserNo != null" >
+                #{createUserNo,jdbcType=BIGINT},
+            </if>
+            <if test="createTime != null" >
+                #{createTime,jdbcType=TIMESTAMP},
+            </if>
+            <if test="updateUserNo != null" >
+                #{updateUserNo,jdbcType=BIGINT},
+            </if>
+            <if test="updateTime != null" >
+                #{updateTime,jdbcType=TIMESTAMP},
+            </if>
+            <if test="isUse != null" >
+                #{isUse,jdbcType=BIT},
+            </if>
+        </trim>
+    </insert>
+
+    <update id="update" parameterType="com.cmpay.yx.entity.UserRoleDO" >
+        update user_role
+        <set >
+            <if test="uid != null" >
+                uid = #{uid,jdbcType=BIGINT},
+            </if>
+            <if test="rid != null" >
+                rid = #{rid,jdbcType=BIGINT},
+            </if>
+            <if test="createUserNo != null" >
+                create_user_no = #{createUserNo,jdbcType=BIGINT},
+            </if>
+            <if test="createTime != null" >
+                create_time = #{createTime,jdbcType=TIMESTAMP},
+            </if>
+            <if test="updateUserNo != null" >
+                update_user_no = #{updateUserNo,jdbcType=BIGINT},
+            </if>
+            <if test="updateTime != null" >
+                update_time = #{updateTime,jdbcType=TIMESTAMP},
+            </if>
+            <if test="isUse != null" >
+                is_use = #{isUse,jdbcType=BIT},
+            </if>
+        </set>
+        where user_role_id = #{userRoleId,jdbcType=BIGINT}
+    </update>
+
+    <select id="find" resultMap="BaseResultMap" parameterType="com.cmpay.yx.entity.UserRoleDO" >
+        select 
+        <include refid="Base_Column_List" />
+        from user_role
+        <where >
+            <if test="userRoleId != null" >
+                and user_role_id = #{userRoleId,jdbcType=BIGINT}
+            </if>
+            <if test="uid != null" >
+                and uid = #{uid,jdbcType=BIGINT}
+            </if>
+            <if test="rid != null" >
+                and rid = #{rid,jdbcType=BIGINT}
+            </if>
+            <if test="createUserNo != null" >
+                and create_user_no = #{createUserNo,jdbcType=BIGINT}
+            </if>
+            <if test="createTime != null" >
+                and create_time = #{createTime,jdbcType=TIMESTAMP}
+            </if>
+            <if test="updateUserNo != null" >
+                and update_user_no = #{updateUserNo,jdbcType=BIGINT}
+            </if>
+            <if test="updateTime != null" >
+                and update_time = #{updateTime,jdbcType=TIMESTAMP}
+            </if>
+            <if test="isUse != null" >
+                and is_use = #{isUse,jdbcType=BIT}
+            </if>
+        </where>
+    </select>
+    <insert id="insertUserRole" parameterType="list">
+        insert into role_menu(<include refid="Base_Column_List" />)
+        values
+        <foreach collection="list" item="item" separator=",">
+            (#{item.userRoleId},#{item.rid},#{item.uid},#{item.createUserNo},#{item.createTime},
+            #{item.updateUserNo},#{item.updateTime}#{item.isUse})
+        </foreach>
+    </insert>
+    <update id="deleteUserRole">
+        update user_role
+        <set >
+            <if test="is_use != null">
+                is_use = 0
+            </if>
+        </set>
+        where uid = #{uid,jdbcType=BIGINT}
+    </update>
+</mapper>

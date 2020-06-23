@@ -1,0 +1,148 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.cmpay.yx.dao.IRoleMenuDao" >
+
+    <resultMap id="BaseResultMap" type="com.cmpay.yx.entity.RoleMenuDO" >
+        <id column="role_menu_id" property="roleMenuId" jdbcType="BIGINT" />
+        <result column="rid" property="rid" jdbcType="BIGINT" />
+        <result column="mid" property="mid" jdbcType="BIGINT" />
+        <result column="create_user_no" property="createUserNo" jdbcType="BIGINT" />
+        <result column="create_time" property="createTime" jdbcType="TIMESTAMP" />
+        <result column="update_user_no" property="updateUserNo" jdbcType="BIGINT" />
+        <result column="update_time" property="updateTime" jdbcType="TIMESTAMP" />
+        <result column="is_use" property="isUse" jdbcType="BIT" />
+    </resultMap>
+
+    <sql id="Base_Column_List" >
+        role_menu_id, rid, mid, create_user_no, create_time, update_user_no, update_time, 
+        is_use
+    </sql>
+
+    <select id="get" resultMap="BaseResultMap" parameterType="java.lang.Long" >
+        select 
+        <include refid="Base_Column_List" />
+        from role_menu
+        where role_menu_id = #{roleMenuId,jdbcType=BIGINT}
+    </select>
+
+    <delete id="delete" parameterType="java.lang.Long" >
+        delete from role_menu
+        where role_menu_id = #{roleMenuId,jdbcType=BIGINT}
+    </delete>
+
+    <insert id="insert" parameterType="com.cmpay.yx.entity.RoleMenuDO" >
+        insert into role_menu
+        <trim prefix="(" suffix=")" suffixOverrides="," >
+            <if test="roleMenuId != null" >
+                role_menu_id,
+            </if>
+            <if test="rid != null" >
+                rid,
+            </if>
+            <if test="mid != null" >
+                mid,
+            </if>
+            <if test="createUserNo != null" >
+                create_user_no,
+            </if>
+            <if test="createTime != null" >
+                create_time,
+            </if>
+            <if test="updateUserNo != null" >
+                update_user_no,
+            </if>
+            <if test="updateTime != null" >
+                update_time,
+            </if>
+            <if test="isUse != null" >
+                is_use,
+            </if>
+        </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides="," >
+            <if test="roleMenuId != null" >
+                #{roleMenuId,jdbcType=BIGINT},
+            </if>
+            <if test="rid != null" >
+                #{rid,jdbcType=BIGINT},
+            </if>
+            <if test="mid != null" >
+                #{mid,jdbcType=BIGINT},
+            </if>
+            <if test="createUserNo != null" >
+                #{createUserNo,jdbcType=BIGINT},
+            </if>
+            <if test="createTime != null" >
+                #{createTime,jdbcType=TIMESTAMP},
+            </if>
+            <if test="updateUserNo != null" >
+                #{updateUserNo,jdbcType=BIGINT},
+            </if>
+            <if test="updateTime != null" >
+                #{updateTime,jdbcType=TIMESTAMP},
+            </if>
+            <if test="isUse != null" >
+                #{isUse,jdbcType=BIT},
+            </if>
+        </trim>
+    </insert>
+
+    <update id="update" parameterType="com.cmpay.yx.entity.RoleMenuDO" >
+        update role_menu
+        <set >
+            <if test="rid != null" >
+                rid = #{rid,jdbcType=BIGINT},
+            </if>
+            <if test="mid != null" >
+                mid = #{mid,jdbcType=BIGINT},
+            </if>
+            <if test="createUserNo != null" >
+                create_user_no = #{createUserNo,jdbcType=BIGINT},
+            </if>
+            <if test="createTime != null" >
+                create_time = #{createTime,jdbcType=TIMESTAMP},
+            </if>
+            <if test="updateUserNo != null" >
+                update_user_no = #{updateUserNo,jdbcType=BIGINT},
+            </if>
+            <if test="updateTime != null" >
+                update_time = #{updateTime,jdbcType=TIMESTAMP},
+            </if>
+            <if test="isUse != null" >
+                is_use = #{isUse,jdbcType=BIT},
+            </if>
+        </set>
+        where role_menu_id = #{roleMenuId,jdbcType=BIGINT}
+    </update>
+
+    <select id="find" resultMap="BaseResultMap" parameterType="com.cmpay.yx.entity.RoleMenuDO" >
+        select 
+        <include refid="Base_Column_List" />
+        from role_menu
+        <where >
+            <if test="roleMenuId != null" >
+                and role_menu_id = #{roleMenuId,jdbcType=BIGINT}
+            </if>
+            <if test="rid != null" >
+                and rid = #{rid,jdbcType=BIGINT}
+            </if>
+            <if test="mid != null" >
+                and mid = #{mid,jdbcType=BIGINT}
+            </if>
+            <if test="createUserNo != null" >
+                and create_user_no = #{createUserNo,jdbcType=BIGINT}
+            </if>
+            <if test="createTime != null" >
+                and create_time = #{createTime,jdbcType=TIMESTAMP}
+            </if>
+            <if test="updateUserNo != null" >
+                and update_user_no = #{updateUserNo,jdbcType=BIGINT}
+            </if>
+            <if test="updateTime != null" >
+                and update_time = #{updateTime,jdbcType=TIMESTAMP}
+            </if>
+            <if test="isUse != null" >
+                and is_use = #{isUse,jdbcType=BIT}
+            </if>
+        </where>
+    </select>
+</mapper>
