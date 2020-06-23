@@ -96,9 +96,7 @@ lemon:
       #配置不进行认证检查的交易请求url
       permitAll:
         - /upms/v1/captcha/getCaptcha
-        - /user/info
-        - /user/getAllUser
-        - /user/inserUser
+        - /user/**
   #Multiple dataSources
   dataSources:
     primary:

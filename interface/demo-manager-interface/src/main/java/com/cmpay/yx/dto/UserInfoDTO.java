@@ -12,6 +12,8 @@ import java.time.LocalDateTime;
 @Data
 @ToString
 public class UserInfoDTO {
+
+    private Long uid;
     /**
      * @Fields username 用户名
      */

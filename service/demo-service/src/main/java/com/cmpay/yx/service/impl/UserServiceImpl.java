@@ -51,7 +51,25 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public UserDO getUserByUid(Long uid) {
-        return null;
+    public UserInfoBO getUserByUid(Long uid) {
+        UserInfoBO bo = new UserInfoBO();
+        UserDO userDO = userDao.getUserByUid(uid);
+        BeanUtils.copyProperties(bo,userDO);
+        return bo;
+    }
+
+    @Override
+    public int updateUser(UserInfoBO userInfoBO) {
+        // 先转换类型  再调用方法
+        UserDO userDO = new UserDO();
+        BeanUtils.copyProperties(userDO,userInfoBO);
+        userDO.setUpdateTime(LocalDateTime.now());
+        int i = userDao.updateUser(userDO);
+        return i;
+    }
+
+    @Override
+    public int deleteUser(Long uid) {
+        return userDao.deleteUser(uid);
     }
 }

@@ -34,5 +34,19 @@ public interface UserService {
      * @param uid
      * @return
      */
-    UserDO getUserByUid(Long uid);
+    UserInfoBO getUserByUid(Long uid);
+
+    /**
+     * 更新用户信息
+     * @param userInfoBO
+     * @return
+     */
+    int updateUser(UserInfoBO userInfoBO);
+
+    /**
+     * 删除用户（逻辑删除）
+     * @param uid
+     * @return
+     */
+    int deleteUser(Long uid);
 }
