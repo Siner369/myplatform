@@ -1,5 +1,6 @@
 dependencies {
     //lemon核心框架starter
+    compile project(':constant:demo-constant')
     compile("com.cmpay:lemon-framework-starter")
     compile("org.projectlombok:lombok")
 

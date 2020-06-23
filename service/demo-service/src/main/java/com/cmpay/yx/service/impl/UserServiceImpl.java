@@ -1,11 +1,17 @@
 package com.cmpay.yx.service.impl;
 
+import com.cmpay.lemon.common.exception.BusinessException;
 import com.cmpay.yx.bo.UserInfoBO;
 import com.cmpay.yx.dao.IUserDao;
+import com.cmpay.yx.dao.IUserRoleDao;
 import com.cmpay.yx.entity.UserDO;
+import com.cmpay.yx.entity.UserRoleDO;
+import com.cmpay.yx.enums.MsgEnum;
 import com.cmpay.yx.service.UserService;
 import org.springframework.stereotype.Service;
 import com.cmpay.lemon.common.utils.*;
+import org.springframework.transaction.annotation.Propagation;
+import org.springframework.transaction.annotation.Transactional;
 
 import javax.annotation.Resource;
 import java.time.LocalDateTime;
@@ -19,6 +25,9 @@ public class UserServiceImpl implements UserService {
 
     @Resource
     private IUserDao userDao;
+
+    @Resource
+    private IUserRoleDao userRoleDao;
 
     @Override
     public List<UserDO> selectAllUser() {
@@ -39,7 +48,8 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public int insertUser(UserInfoBO userInfoBO) {
+    @Transactional(propagation = Propagation.REQUIRED, rollbackFor = Exception.class)
+    public void insertUser(UserInfoBO userInfoBO) {
         UserInfoBO bo = userInfoBO;
         UserDO userDO = new UserDO();
         bo.setCreateTime(LocalDateTime.now());
@@ -47,7 +57,9 @@ public class UserServiceImpl implements UserService {
         bo.setState((byte) 1);
         BeanUtils.copyProperties(userDO,userInfoBO);
         int i = userDao.insertUser(userDO);
-        return i;
+        if (i != 1) {
+            BusinessException.throwBusinessException(MsgEnum.DB_INSERT_FAILED);
+        }
     }
 
     @Override
@@ -59,17 +71,31 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public int updateUser(UserInfoBO userInfoBO) {
+    @Transactional(propagation = Propagation.REQUIRED, rollbackFor = Exception.class)
+    public void updateUser(UserInfoBO userInfoBO) {
         // 先转换类型  再调用方法
         UserDO userDO = new UserDO();
         BeanUtils.copyProperties(userDO,userInfoBO);
         userDO.setUpdateTime(LocalDateTime.now());
         int i = userDao.updateUser(userDO);
-        return i;
+        if (i==0) {
+            BusinessException.throwBusinessException(MsgEnum.USER_DUPLICATE);
+        }
     }
 
     @Override
-    public int deleteUser(Long uid) {
-        return userDao.deleteUser(uid);
+    @Transactional(propagation = Propagation.REQUIRED, rollbackFor = Exception.class)
+    public void deleteUser(Long uid) {
+        int i = userDao.deleteUser(uid);
+        if (i != 1) {
+            BusinessException.throwBusinessException(MsgEnum.DB_DELETE_FAILED);
+        }
+    }
+
+    @Override
+    @Transactional(propagation = Propagation.REQUIRED, rollbackFor = Exception.class)
+    public int insertUserRole(List<UserRoleDO> ridList) {
+        int i = userRoleDao.insertUserRole(ridList);
+        return i;
     }
 }

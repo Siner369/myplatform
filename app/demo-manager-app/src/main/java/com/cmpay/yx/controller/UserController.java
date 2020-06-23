@@ -2,6 +2,10 @@ package com.cmpay.yx.controller;
 
 import com.cmpay.lemon.common.utils.BeanUtils;
 import com.cmpay.lemon.framework.utils.IdGenUtils;
+import com.cmpay.lemon.framework.annotation.QueryBody;
+import com.cmpay.lemon.framework.data.DefaultRspDTO;
+import com.cmpay.lemon.framework.data.NoBody;
+import com.cmpay.lemon.framework.page.PageInfo;
 import com.cmpay.yx.bo.UserInfoBO;
 import com.cmpay.yx.dto.UserInfoDTO;
 import com.cmpay.yx.dto.UserInfoQueryRspDTO;
@@ -26,7 +30,10 @@ public class UserController {
     private UserService userService;
 
 
-
+    /**
+     * 分页查询用户信息
+     * @return
+     */
     @GetMapping("/getAllUser")
     public @ResponseBody List<UserInfoQueryRspDTO> selectAllUser(){
         // 新建两个list 分别是DO和RSP的
@@ -43,8 +50,13 @@ public class UserController {
         return rspDTOList;
     }
 
-    @PostMapping("/inserUser")
-    public int inserUser(@RequestBody UserInfoDTO userInfoDTO) {
+    /**
+     * 新增用户
+     * @param userInfoDTO
+     * @return
+     */
+    @PostMapping("/insertUser")
+    public DefaultRspDTO<NoBody> insertUser(@RequestBody UserInfoDTO userInfoDTO) {
         Long uid = new Random().nextLong();
         // IdGenUtils.generateCommonId("999999999");
 
@@ -53,8 +65,8 @@ public class UserController {
         BeanUtils.copyProperties(bo, dto);
         //  bo.setUid(Long.valueOf(uid));
         bo.setUid(uid);
-        int i = userService.insertUser(bo);
-        return i;
+        userService.insertUser(bo);
+        return DefaultRspDTO.newSuccessInstance();
     }
 
     /*@GetMapping("/login")
@@ -73,26 +85,26 @@ public class UserController {
     }*/
 
     @PostMapping("/updateUser")
-    public int updateUser(@RequestBody UserInfoDTO userInfoDTO) {
+    public DefaultRspDTO<NoBody> updateUser(@RequestBody UserInfoDTO userInfoDTO) {
         UserInfoBO bo = new UserInfoBO();
         BeanUtils.copyProperties(bo, userInfoDTO);
-        int i = userService.updateUser(bo);
-        return i;
+        userService.updateUser(bo);
+        return DefaultRspDTO.newSuccessInstance();
     }
 
     @GetMapping("/getUserByUid/{uid}")
-    public @ResponseBody UserInfoRspDTO getUserByUid(@PathVariable Long uid) {
+    public @ResponseBody DefaultRspDTO<UserInfoDTO> getUserByUid(@PathVariable Long uid) {
         // 调用service的方法  并转换BO
-        UserInfoRspDTO rspDTO = new UserInfoRspDTO();
+        UserInfoDTO dto = new UserInfoDTO();
         UserInfoBO bo = userService.getUserByUid(uid);
-        BeanUtils.copyProperties(rspDTO, bo);
-        return rspDTO;
+        BeanUtils.copyProperties(dto, bo);
+        return DefaultRspDTO.newSuccessInstance(dto);
     }
 
     @GetMapping("/deleteUser/{uid}")
-    public int deleteUser(@PathVariable Long uid) {
-        int i = userService.deleteUser(uid);
-        return i;
+    public DefaultRspDTO<NoBody> deleteUser(@PathVariable Long uid) {
+        userService.deleteUser(uid);
+        return DefaultRspDTO.newSuccessInstance();
     }
 
 

@@ -2,6 +2,7 @@ package com.cmpay.yx.service;
 
 import com.cmpay.yx.bo.UserInfoBO;
 import com.cmpay.yx.entity.UserDO;
+import com.cmpay.yx.entity.UserRoleDO;
 
 import java.util.List;
 
@@ -25,9 +26,8 @@ public interface UserService {
     /**
      * 新增用户方法
      * @param userInfoBO
-     * @return
      */
-    int insertUser(UserInfoBO userInfoBO);
+    void insertUser(UserInfoBO userInfoBO);
 
     /**
      * 根据ID找用户
@@ -39,14 +39,21 @@ public interface UserService {
     /**
      * 更新用户信息
      * @param userInfoBO
-     * @return
      */
-    int updateUser(UserInfoBO userInfoBO);
+    void updateUser(UserInfoBO userInfoBO);
 
     /**
      * 删除用户（逻辑删除）
      * @param uid
+     */
+    void deleteUser(Long uid);
+
+    /**
+     * 批量插入用户所带的角色
+     * @param ridList
      * @return
      */
-    int deleteUser(Long uid);
+    int insertUserRole(List<UserRoleDO> ridList);
+
+
 }

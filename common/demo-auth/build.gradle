@@ -7,5 +7,8 @@ dependencies {
     compile("com.cmpay:lemon-framework-starter-session")
     compile("com.cmpay:lemon-framework-starter-security")
     compile("com.cmpay:lemon-framework-starter-security-refresh")
+    
+    //解谜包
+    compile("org.apache.shiro:shiro-core:1.4.0")
 
 }

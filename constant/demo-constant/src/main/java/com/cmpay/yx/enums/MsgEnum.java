@@ -5,14 +5,14 @@ import org.apache.commons.lang3.StringUtils;
 
 /**
  * 描述
- * @author : yexing
+ * @author : Noone
  */
 public enum MsgEnum implements AlertCapable {
     /**
      * SUCCESS
      */
     SUCCESS("TST00000", "交易成功"),
-    FAIL("TST00401","登录失败"),
+    FAIL("TST00777","登录异常"),
     USER_DUPLICATE("TST00601","用户名重复"),
     DB_INSERT_FAILED("TST00102", "数据新增失败"),
     DB_DELETE_FAILED("TST00101", "数据删除失败"),
