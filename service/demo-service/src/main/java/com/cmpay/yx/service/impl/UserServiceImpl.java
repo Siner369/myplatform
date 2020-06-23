@@ -1,7 +1,9 @@
 package com.cmpay.yx.service.impl;
 
 import com.cmpay.lemon.common.exception.BusinessException;
+import com.cmpay.lemon.framework.utils.IdGenUtils;
 import com.cmpay.yx.bo.UserInfoBO;
+import com.cmpay.yx.bo.UserRoleBO;
 import com.cmpay.yx.dao.IUserDao;
 import com.cmpay.yx.dao.IUserRoleDao;
 import com.cmpay.yx.entity.UserDO;
@@ -15,6 +17,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import javax.annotation.Resource;
 import java.time.LocalDateTime;
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -83,6 +86,10 @@ public class UserServiceImpl implements UserService {
         }
     }
 
+    /**
+     * sha
+     * @param uid
+     */
     @Override
     @Transactional(propagation = Propagation.REQUIRED, rollbackFor = Exception.class)
     public void deleteUser(Long uid) {
@@ -92,10 +99,38 @@ public class UserServiceImpl implements UserService {
         }
     }
 
+    /**
+     * 插入
+     * @param userRoleBO
+     * @return
+     */
     @Override
     @Transactional(propagation = Propagation.REQUIRED, rollbackFor = Exception.class)
-    public int insertUserRole(List<UserRoleDO> ridList) {
-        int i = userRoleDao.insertUserRole(ridList);
+    public int batchInsertUserRole(UserRoleBO userRoleBO) {
+        List<UserRoleDO> list = new ArrayList<>();
+        // 获取用户id
+        Long uid = userRoleBO.getUserId();
+        // 获取角色有多少个
+        int length = userRoleBO.getRidList().size();
+        //循环创建DO  准备塞到数据库里
+        for (int i = 0; i < length; i++) {
+            Long randomId = Long.valueOf(IdGenUtils.generateId("YX_ID"));
+            Long rid = userRoleBO.getRidList().get(i);
+            list.add(new UserRoleDO(randomId,uid,rid,1L,LocalDateTime.now(),1L,LocalDateTime.now(),true));
+        }
+        int i = userRoleDao.insertUserRole(list);
         return i;
     }
+
+    /**
+     * 删除
+     * @param uid
+     * @return
+     */
+    @Override
+    public int batchDeleteUserRole(Long uid) {
+        return userRoleDao.deleteUserRole(uid);
+    }
+
+
 }

@@ -134,6 +134,7 @@ lemon:
       MSGID_: 999999999
       REQUESTID_: 999999999
       SYS:PUB:SEQ: 999999999
+      YX_ID: 9999999999
   cache:
     jcache:
       config: classpath:config/ehcache3.xml

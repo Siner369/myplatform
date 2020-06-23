@@ -27,6 +27,12 @@ lemon:
       password: 'foobared'
       cluster:
         nodes: 172.16.49.135:6679,172.16.49.135:6680,172.16.49.136:6679,172.16.49.136:6680,172.16.49.137:6679,172.16.49.137:6680
+    id-infos:
+      TEST_IDGEN:
+        name: YX_ID
+        maxValue: 10000
+        minValue: 2
+        delta: 30
   cache:
     redis:
       password: 'foobared'

@@ -80,14 +80,14 @@ public class BeanConvertUtils {
         if (null != data && data.size() > 0) {
             BeanCopier copier = BeanCopier.create(data.get(0).getClass(), clazz, converter != null);
             for (T1 t1 : data) {
-                T2 _t2;
+                T2 tt2;
                 try {
-                    _t2 = clazz.newInstance();
+                    tt2 = clazz.newInstance();
                 } catch (Exception e) {
                     throw new BusinessException("系统异常");
                 }
-                copier.copy(t1, _t2, converter);
-                t2.add(_t2);
+                copier.copy(t1, tt2, converter);
+                t2.add(tt2);
             }
         }
         return t2;

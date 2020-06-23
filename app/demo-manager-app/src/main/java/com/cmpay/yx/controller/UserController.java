@@ -7,9 +7,11 @@ import com.cmpay.lemon.framework.data.DefaultRspDTO;
 import com.cmpay.lemon.framework.data.NoBody;
 import com.cmpay.lemon.framework.page.PageInfo;
 import com.cmpay.yx.bo.UserInfoBO;
+import com.cmpay.yx.bo.UserRoleBO;
 import com.cmpay.yx.dto.UserInfoDTO;
 import com.cmpay.yx.dto.UserInfoQueryRspDTO;
 import com.cmpay.yx.dto.UserInfoRspDTO;
+import com.cmpay.yx.dto.UserRoleReqDTO;
 import com.cmpay.yx.entity.UserDO;
 import com.cmpay.yx.service.UserService;
 import org.springframework.web.bind.annotation.*;
@@ -17,7 +19,6 @@ import org.springframework.web.bind.annotation.*;
 import javax.annotation.Resource;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Random;
 
 /**
  * @author yexing
@@ -35,19 +36,21 @@ public class UserController {
      * @return
      */
     @GetMapping("/getAllUser")
-    public @ResponseBody List<UserInfoQueryRspDTO> selectAllUser(){
-        // 新建两个list 分别是DO和RSP的
-        List<UserInfoQueryRspDTO> rspDTOList = new ArrayList<>();
+    public @ResponseBody UserInfoQueryRspDTO selectAllUser(){
+        // 新建两个list 分别是DO和存Rsp的数组
         List<UserDO> userDOList = userService.selectAllUser();
-
+        List<UserInfoDTO> dtoList = new ArrayList<>();
         // 脱去敏感信息 转成rsp  rsp里还包含了分页信息
         userDOList.stream().forEach(item->{
-            UserInfoQueryRspDTO userRspDTO = new UserInfoQueryRspDTO();
-            BeanUtils.copyProperties(userRspDTO, item);
-            rspDTOList.add(userRspDTO);
+            // 逐步把DO 转换成DTO 放进dtoList里去
+            UserInfoDTO dto = new UserInfoDTO();
+            BeanUtils.copyProperties(dto, item);
+            dtoList.add(dto);
         });
-        System.out.println(rspDTOList);
-        return rspDTOList;
+        // 设定list
+        UserInfoQueryRspDTO userRspDTO = new UserInfoQueryRspDTO();
+        userRspDTO.setList(dtoList);
+        return userRspDTO;
     }
 
     /**
@@ -56,15 +59,13 @@ public class UserController {
      * @return
      */
     @PostMapping("/insertUser")
-    public DefaultRspDTO<NoBody> insertUser(@RequestBody UserInfoDTO userInfoDTO) {
-        Long uid = new Random().nextLong();
-        // IdGenUtils.generateCommonId("999999999");
+    public DefaultRspDTO<NoBody> insertUser( UserInfoDTO userInfoDTO) {
+        Long randomId = Long.valueOf(IdGenUtils.generateId("YX_ID"));
 
         UserInfoDTO dto = userInfoDTO;
         UserInfoBO bo = new UserInfoBO();
         BeanUtils.copyProperties(bo, dto);
-        //  bo.setUid(Long.valueOf(uid));
-        bo.setUid(uid);
+        bo.setUid(randomId);
         userService.insertUser(bo);
         return DefaultRspDTO.newSuccessInstance();
     }
@@ -104,6 +105,20 @@ public class UserController {
     @GetMapping("/deleteUser/{uid}")
     public DefaultRspDTO<NoBody> deleteUser(@PathVariable Long uid) {
         userService.deleteUser(uid);
+        return DefaultRspDTO.newSuccessInstance();
+    }
+
+    public DefaultRspDTO<NoBody> batchInsertUserRole(UserRoleReqDTO dto){
+        UserRoleBO bo = new UserRoleBO();
+        BeanUtils.copyProperties(dto, bo);
+        // 批量增加成功的个数  应该有一个提示的东西
+        int i = userService.batchInsertUserRole(bo);
+
+        return DefaultRspDTO.newSuccessInstance();
+    }
+
+    public DefaultRspDTO<NoBody> batchDeleteUserRole(Long uid) {
+        int i = userService.batchDeleteUserRole(uid);
         return DefaultRspDTO.newSuccessInstance();
     }
 

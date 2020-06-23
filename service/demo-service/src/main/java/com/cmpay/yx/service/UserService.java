@@ -1,6 +1,7 @@
 package com.cmpay.yx.service;
 
 import com.cmpay.yx.bo.UserInfoBO;
+import com.cmpay.yx.bo.UserRoleBO;
 import com.cmpay.yx.entity.UserDO;
 import com.cmpay.yx.entity.UserRoleDO;
 
@@ -50,10 +51,15 @@ public interface UserService {
 
     /**
      * 批量插入用户所带的角色
-     * @param ridList
-     * @return
+     * @param userRoleBO
+     * @return int
      */
-    int insertUserRole(List<UserRoleDO> ridList);
+    int batchInsertUserRole(UserRoleBO userRoleBO);
 
-
+    /**
+     * 批量删除跟此UID有关的数据
+     * @param uid
+     * @return int
+     */
+    int batchDeleteUserRole(Long uid);
 }
