@@ -1,6 +1,6 @@
 /*
  * @ClassName IRoleDao
- * @Description 
+ * @Description
  * @version 1.0
  * @Date 2020-06-22 23:41:43
  */
@@ -24,37 +24,38 @@ public interface IRoleDao extends BaseDao<RoleDO, Long> {
     List<RoleDO> selectAllRole();
 
     /**
-     * 登录
+     *新增角色
      * @param roleDO
      * @return
      */
-    RoleDO login(RoleDO roleDO);
-
-    /**
-     *新增用户
-     * @param roleDO
-     * @return
-     */
-    int insertUser(RoleDO roleDO);
+    int insertRole(RoleDO roleDO);
 
     /**
      * 以UID搜索用户
-     * @param uid
+     * @param rid
      * @return
      */
-    RoleDO getUserByUid(Long uid);
+    RoleDO getRoleByRid(Long rid);
 
     /**
      * 更新用户信息
      * @param roleDO
      * @return
      */
-    int updateUser(RoleDO roleDO);
+    int updateRole(RoleDO roleDO);
 
     /**
      * 假删除用户
-     * @param uid
+     * @param rid
      * @return
      */
-    int deleteUser(Long uid);
+    int deleteRole(Long rid);
+
+
+    /**
+     * 批量假删除
+     * @param roleNos
+     * @return
+     */
+    int batchDeleteRole(List<Long> roleNos);
 }

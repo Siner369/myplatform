@@ -1,8 +1,6 @@
 package com.cmpay.yx.bo;
 
-import lombok.AllArgsConstructor;
 import lombok.Data;
-import lombok.NoArgsConstructor;
 import lombok.ToString;
 
 import java.time.LocalDateTime;
@@ -12,35 +10,39 @@ import java.time.LocalDateTime;
  */
 @Data
 @ToString
-public class UserInfoBO {
+public class MenuBO {
     /**
-     * @Fields uid 用户ID
+     * @Fields mid 菜单ID
      */
-    private Long uid;
+    private Long mid;
     /**
-     * @Fields username 用户名
+     * @Fields menuType 菜单名称
      */
-    private String username;
+    private String menuType;
     /**
-     * @Fields password 密码
+     * @Fields superMenuId 上级菜单ID 默认0
      */
-    private String password;
+    private Integer superMenuId;
     /**
-     * @Fields name 姓名
+     * @Fields menuName 菜单名称
      */
-    private String name;
+    private String menuName;
     /**
-     * @Fields email 邮箱
+     * @Fields menuLink 菜单链接
      */
-    private String email;
+    private String menuLink;
     /**
-     * @Fields mobile 手机号
+     * @Fields redirect 重定向
      */
-    private String mobile;
+    private String redirect;
     /**
-     * @Fields state 禁用 或者 正常
+     * @Fields menuEnglishName 菜单英文名称
      */
-    private Byte state;
+    private String menuEnglishName;
+    /**
+     * @Fields authMark 授权标识
+     */
+    private String authMark;
     /**
      * @Fields createUserNo 创建人
      */
@@ -57,4 +59,5 @@ public class UserInfoBO {
      * @Fields updateTime 创建时间
      */
     private LocalDateTime updateTime;
+
 }

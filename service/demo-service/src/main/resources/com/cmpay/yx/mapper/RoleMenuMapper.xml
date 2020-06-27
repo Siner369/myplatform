@@ -14,15 +14,15 @@
     </resultMap>
 
     <sql id="Base_Column_List" >
-        role_menu_id, rid, mid, create_user_no, create_time, update_user_no, update_time, 
+        role_menu_id, rid, mid, create_user_no, create_time, update_user_no, update_time,
         is_use
     </sql>
 
-    <select id="get" resultMap="BaseResultMap" parameterType="java.lang.Long" >
-        select 
+    <select id="selectAllRoleMenu" resultMap="BaseResultMap" parameterType="java.lang.Long" >
+        select
         <include refid="Base_Column_List" />
         from role_menu
-        where role_menu_id = #{roleMenuId,jdbcType=BIGINT}
+        where is_use = 1
     </select>
 
     <delete id="delete" parameterType="java.lang.Long" >
@@ -114,35 +114,19 @@
         where role_menu_id = #{roleMenuId,jdbcType=BIGINT}
     </update>
 
-    <select id="find" resultMap="BaseResultMap" parameterType="com.cmpay.yx.entity.RoleMenuDO" >
-        select 
-        <include refid="Base_Column_List" />
-        from role_menu
-        <where >
-            <if test="roleMenuId != null" >
-                and role_menu_id = #{roleMenuId,jdbcType=BIGINT}
-            </if>
-            <if test="rid != null" >
-                and rid = #{rid,jdbcType=BIGINT}
-            </if>
-            <if test="mid != null" >
-                and mid = #{mid,jdbcType=BIGINT}
-            </if>
-            <if test="createUserNo != null" >
-                and create_user_no = #{createUserNo,jdbcType=BIGINT}
-            </if>
-            <if test="createTime != null" >
-                and create_time = #{createTime,jdbcType=TIMESTAMP}
-            </if>
-            <if test="updateUserNo != null" >
-                and update_user_no = #{updateUserNo,jdbcType=BIGINT}
-            </if>
-            <if test="updateTime != null" >
-                and update_time = #{updateTime,jdbcType=TIMESTAMP}
-            </if>
-            <if test="isUse != null" >
-                and is_use = #{isUse,jdbcType=BIT}
-            </if>
-        </where>
-    </select>
+
+    <insert id="insertRoleMenuBatch" parameterType="list">
+        insert into role_menu(<include refid="Base_Column_List" />)
+        values
+        <foreach collection="list" item="item" separator=",">
+            (#{item.roleMenuId},#{item.rid},#{item.mid},#{item.createUserNo},#{item.createTime},
+            #{item.updateUserNo},#{item.updateTime}#{item.isUse})
+        </foreach>
+    </insert>
+
+    <update id="deleteRoleMenuBatch" parameterType="java.lang.Long">
+        update role_menu
+        set  is_use = 0
+        where rid = #{rid,jdbcType=BIGINT}
+    </update>
 </mapper>

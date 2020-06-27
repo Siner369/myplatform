@@ -8,6 +8,24 @@ spring:
     cluster:
       nodes: 172.16.49.135:6679,172.16.49.135:6680,172.16.49.136:6679,172.16.49.136:6680,172.16.49.137:6679,172.16.49.137:6680
     password:  'foobared'
+  cloud:
+    stream:
+      binders:
+        rabbit-lemon:
+          environment:
+            spring:
+              rabbitmq:
+                addresses: 172.16.49.111:5672,172.16.49.112:5672
+                password: 'Rabbitmq123'
+        rabbit:
+          environment:
+            spring:
+              rabbitmq:
+                addresses: 172.16.49.111:5672,172.16.49.112:5672
+                password: 'Rabbitmq123'
+    kafka:
+      producer:
+        bootstrap-servers: 172.16.49.88:9092,172.16.49.89:9092
 
 lemon:
   alerting:

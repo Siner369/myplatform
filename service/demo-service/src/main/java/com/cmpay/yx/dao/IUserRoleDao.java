@@ -1,6 +1,6 @@
 /*
  * @ClassName IUserRoleDao
- * @Description 
+ * @Description
  * @version 1.0
  * @Date 2020-06-22 23:41:43
  */
@@ -17,6 +17,8 @@ import java.util.List;
  */
 @Mapper
 public interface IUserRoleDao extends BaseDao<UserRoleDO, Long> {
+
+
 
     /**
      * 批量插入用户角色表

@@ -195,7 +195,7 @@
     <select id="login" resultMap="BaseResultMap" parameterType="com.cmpay.yx.entity.UserDO">
         select
         <include refid="Base_Column_List" />
-        from t_user
+        from t_user where
         username = #{username,jdbcType=VARCHAR}
         and password = #{password,jdbcType=VARCHAR}
         and is_use = 1

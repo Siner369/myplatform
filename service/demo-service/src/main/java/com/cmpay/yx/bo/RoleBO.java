@@ -12,35 +12,19 @@ import java.time.LocalDateTime;
  */
 @Data
 @ToString
-public class UserInfoBO {
+public class RoleBO {
     /**
-     * @Fields uid 用户ID
+     * @Fields rid 角色ID
      */
-    private Long uid;
+    private Long rid;
     /**
-     * @Fields username 用户名
+     * @Fields roleName 角色名
      */
-    private String username;
+    private String roleName;
     /**
-     * @Fields password 密码
+     * @Fields roleNote 备注
      */
-    private String password;
-    /**
-     * @Fields name 姓名
-     */
-    private String name;
-    /**
-     * @Fields email 邮箱
-     */
-    private String email;
-    /**
-     * @Fields mobile 手机号
-     */
-    private String mobile;
-    /**
-     * @Fields state 禁用 或者 正常
-     */
-    private Byte state;
+    private String roleNote;
     /**
      * @Fields createUserNo 创建人
      */

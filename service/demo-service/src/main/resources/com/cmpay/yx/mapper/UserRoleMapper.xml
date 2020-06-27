@@ -14,12 +14,12 @@
     </resultMap>
 
     <sql id="Base_Column_List" >
-        user_role_id, uid, rid, create_user_no, create_time, update_user_no, update_time, 
+        user_role_id, uid, rid, create_user_no, create_time, update_user_no, update_time,
         is_use
     </sql>
 
     <select id="get" resultMap="BaseResultMap" parameterType="java.lang.Long" >
-        select 
+        select
         <include refid="Base_Column_List" />
         from user_role
         where user_role_id = #{userRoleId,jdbcType=BIGINT}
@@ -115,7 +115,7 @@
     </update>
 
     <select id="find" resultMap="BaseResultMap" parameterType="com.cmpay.yx.entity.UserRoleDO" >
-        select 
+        select
         <include refid="Base_Column_List" />
         from user_role
         <where >
@@ -145,21 +145,19 @@
             </if>
         </where>
     </select>
+
     <insert id="insertUserRole" parameterType="list">
-        insert into role_menu(<include refid="Base_Column_List" />)
+        insert into user_role(<include refid="Base_Column_List" />)
         values
         <foreach collection="list" item="item" separator=",">
-            (#{item.userRoleId},#{item.rid},#{item.uid},#{item.createUserNo},#{item.createTime},
+            (#{item.userRoleId},#{item.uid},#{item.rid},#{item.createUserNo},#{item.createTime},
             #{item.updateUserNo},#{item.updateTime}#{item.isUse})
         </foreach>
     </insert>
+
     <update id="deleteUserRole">
         update user_role
-        <set >
-            <if test="is_use != null">
-                is_use = 0
-            </if>
-        </set>
+        set  is_use = 0
         where uid = #{uid,jdbcType=BIGINT}
     </update>
 </mapper>

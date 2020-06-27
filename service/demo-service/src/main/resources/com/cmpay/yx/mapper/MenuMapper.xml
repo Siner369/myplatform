@@ -19,23 +19,29 @@
     </resultMap>
 
     <sql id="Base_Column_List" >
-        mid, menu_type, super_menu_id, menu_name, menu_link, redirect, menu_english_name, 
+        mid, menu_type, super_menu_id, menu_name, menu_link, redirect, menu_english_name,
         auth_mark, create_user_no, create_time, update_user_no, update_time, is_use
     </sql>
 
-    <select id="get" resultMap="BaseResultMap" parameterType="java.lang.Long" >
-        select 
+    <select id="selectAllMenu" resultMap="BaseResultMap" parameterType="java.lang.Long" >
+        select
         <include refid="Base_Column_List" />
-        from menu
-        where mid = #{mid,jdbcType=BIGINT}
+        from menu where is_use = 1
     </select>
 
-    <delete id="delete" parameterType="java.lang.Long" >
-        delete from menu
-        where mid = #{mid,jdbcType=BIGINT}
-    </delete>
+    <select id="getMenuByMid" resultMap="BaseResultMap" parameterType="java.lang.Long" >
+        select
+        <include refid="Base_Column_List" />
+        from menu
+        where mid = #{mid,jdbcType=BIGINT} and  is_use = 1
+    </select>
 
-    <insert id="insert" parameterType="com.cmpay.yx.entity.MenuDO" >
+    <update id="deleteMenu" parameterType="java.lang.Long" >
+        update menu set is_use = 0
+        where mid = #{mid,jdbcType=BIGINT}
+    </update>
+
+    <insert id="insertMenu" parameterType="com.cmpay.yx.entity.MenuDO" >
         insert into menu
         <trim prefix="(" suffix=")" suffixOverrides="," >
             <if test="mid != null" >
@@ -121,7 +127,7 @@
         </trim>
     </insert>
 
-    <update id="update" parameterType="com.cmpay.yx.entity.MenuDO" >
+    <update id="updateMenu" parameterType="com.cmpay.yx.entity.MenuDO" >
         update menu
         <set >
             <if test="menuType != null" >
@@ -145,27 +151,18 @@
             <if test="authMark != null" >
                 auth_mark = #{authMark,jdbcType=VARCHAR},
             </if>
-            <if test="createUserNo != null" >
-                create_user_no = #{createUserNo,jdbcType=BIGINT},
-            </if>
-            <if test="createTime != null" >
-                create_time = #{createTime,jdbcType=TIMESTAMP},
-            </if>
             <if test="updateUserNo != null" >
                 update_user_no = #{updateUserNo,jdbcType=BIGINT},
             </if>
             <if test="updateTime != null" >
                 update_time = #{updateTime,jdbcType=TIMESTAMP},
             </if>
-            <if test="isUse != null" >
-                is_use = #{isUse,jdbcType=BIT},
-            </if>
         </set>
-        where mid = #{mid,jdbcType=BIGINT}
+        where mid = #{mid,jdbcType=BIGINT} and  is_use = 1
     </update>
 
     <select id="find" resultMap="BaseResultMap" parameterType="com.cmpay.yx.entity.MenuDO" >
-        select 
+        select
         <include refid="Base_Column_List" />
         from menu
         <where >
@@ -205,9 +202,7 @@
             <if test="updateTime != null" >
                 and update_time = #{updateTime,jdbcType=TIMESTAMP}
             </if>
-            <if test="isUse != null" >
-                and is_use = #{isUse,jdbcType=BIT}
-            </if>
+                and is_use = 1
         </where>
     </select>
 </mapper>

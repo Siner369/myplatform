@@ -19,10 +19,17 @@
     </sql>
 
     <select id="selectAllRole" resultMap="BaseResultMap" parameterType="java.lang.Long" >
-        select 
+        select
         <include refid="Base_Column_List" />
         from role
         where is_use = 1
+    </select>
+
+    <select id="getRoleByRid" resultMap="BaseResultMap" parameterType="java.lang.Long" >
+        select
+        <include refid="Base_Column_List" />
+        from role
+        where rid = #{rid,jdbcType=BIGINT} and is_use = 1
     </select>
 
     <delete id="delete" parameterType="java.lang.Long" >
@@ -30,7 +37,7 @@
         where rid = #{rid,jdbcType=BIGINT}
     </delete>
 
-    <insert id="insert" parameterType="com.cmpay.yx.entity.RoleDO" >
+    <insert id="insertRole" parameterType="com.cmpay.yx.entity.RoleDO" >
         insert into role
         <trim prefix="(" suffix=")" suffixOverrides="," >
             <if test="rid != null" >
@@ -86,7 +93,7 @@
         </trim>
     </insert>
 
-    <update id="update" parameterType="com.cmpay.yx.entity.RoleDO" >
+    <update id="updateRole" parameterType="com.cmpay.yx.entity.RoleDO" >
         update role
         <set >
             <if test="roleName != null" >
@@ -95,20 +102,11 @@
             <if test="roleNote != null" >
                 role_note = #{roleNote,jdbcType=VARCHAR},
             </if>
-            <if test="createUserNo != null" >
-                create_user_no = #{createUserNo,jdbcType=BIGINT},
-            </if>
-            <if test="createTime != null" >
-                create_time = #{createTime,jdbcType=TIMESTAMP},
-            </if>
             <if test="updateUserNo != null" >
                 update_user_no = #{updateUserNo,jdbcType=BIGINT},
             </if>
             <if test="updateTime != null" >
                 update_time = #{updateTime,jdbcType=TIMESTAMP},
-            </if>
-            <if test="isUse != null" >
-                is_use = #{isUse,jdbcType=BIT},
             </if>
         </set>
         where rid = #{rid,jdbcType=BIGINT}
@@ -145,4 +143,14 @@
             </if>
         </where>
     </select>
+
+    <update id="deleteRole" parameterType="com.cmpay.yx.entity.RoleDO" >
+        update role
+        set is_use = 0
+        where rid = #{rid,jdbcType=BIGINT}
+    </update>
+    <delete id="batchDeleteRole">
+
+    </delete>
+
 </mapper>

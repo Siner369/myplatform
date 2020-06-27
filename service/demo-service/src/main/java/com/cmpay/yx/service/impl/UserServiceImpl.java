@@ -10,6 +10,7 @@ import com.cmpay.yx.entity.UserDO;
 import com.cmpay.yx.entity.UserRoleDO;
 import com.cmpay.yx.enums.MsgEnum;
 import com.cmpay.yx.service.UserService;
+import com.rabbitmq.http.client.domain.UserInfo;
 import org.springframework.stereotype.Service;
 import com.cmpay.lemon.common.utils.*;
 import org.springframework.transaction.annotation.Propagation;
@@ -39,15 +40,19 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public UserInfoBO login(UserInfoBO userInfoBO) {
-        // 创建一个DO 用来转换上面传回来的BO
+        // 创建一个DO BO用来转换上面传回来的BO
         UserDO userDO = new UserDO();
+        UserInfoBO bo = new UserInfoBO();
         BeanUtils.copyProperties(userDO,userInfoBO);
 
         // 将装换成功的DO 去数据库查询 返回一个结果对象
         UserDO login = userDao.login(userDO);
         // 将结果对象再转成BO 送给上面
-        BeanUtils.copyProperties(userInfoBO,login);
-        return userInfoBO;
+        if (login == null) {
+            BusinessException.throwBusinessException(MsgEnum.FAIL);
+        }
+        BeanUtils.copyProperties(bo,login);
+        return bo;
     }
 
     @Override

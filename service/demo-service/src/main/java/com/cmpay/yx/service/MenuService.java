@@ -5,5 +5,4 @@ package com.cmpay.yx.service;
  */
 public interface MenuService {
 
-
 }
