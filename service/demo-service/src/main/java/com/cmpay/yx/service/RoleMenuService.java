@@ -1,25 +1,14 @@
-/*
- * @ClassName IRoleMenuDao
- * @Description
- * @version 1.0
- * @Date 2020-06-22 23:41:43
- */
-package com.cmpay.yx.dao;
+package com.cmpay.yx.service;
 
-import com.cmpay.lemon.framework.dao.BaseDao;
-import com.cmpay.yx.entity.MenuDO;
+import com.cmpay.yx.bo.RoleMenuBO;
 import com.cmpay.yx.entity.RoleMenuDO;
-import com.cmpay.yx.entity.UserRoleDO;
-import org.apache.ibatis.annotations.Mapper;
 
 import java.util.List;
 
 /**
  * @author Administrator
  */
-@Mapper
-public interface IRoleMenuDao extends BaseDao<RoleMenuDO, Long> {
-
+public interface RoleMenuService {
     /**
      * 查找所有角色权限菜单
      * @return
@@ -29,31 +18,31 @@ public interface IRoleMenuDao extends BaseDao<RoleMenuDO, Long> {
     ///
     /**
      *新增权限
-     * @param roleMenuDO
+     * @param roleMenuBO
      * @return
      */
-    int insertRoleMenu(RoleMenuDO roleMenuDO);
+    void insertRoleMenu(RoleMenuBO roleMenuBO);
 
     /**
      * 以ROLE_MENU_ID搜索权限
      * @param roleMenuId
      * @return
      */
-    RoleMenuDO getRoleMenuByRoleMenuId(Long roleMenuId);
+    RoleMenuBO getRoleMenuByRoleMenuId(Long roleMenuId);
 
     /**
      * 更新权限信息
-     * @param roleMenuDO
+     * @param roleMenuBO
      * @return
      */
-    int updateRoleMenu(RoleMenuDO roleMenuDO);
+    void updateRoleMenu(RoleMenuBO roleMenuBO);
 
     /**
      * 假删除权限
      * @param roleMenuId
      * @return
      */
-    int deleteRoleMenu(Long roleMenuId);
+    void deleteRoleMenu(Long roleMenuId);
     ///
 
     /**
@@ -69,4 +58,5 @@ public interface IRoleMenuDao extends BaseDao<RoleMenuDO, Long> {
      * @return
      */
     int deleteRoleMenuBatch(Long rid);
+
 }

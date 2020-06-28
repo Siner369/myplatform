@@ -8,10 +8,8 @@ package com.cmpay.yx.dao;
 
 import com.cmpay.lemon.framework.dao.BaseDao;
 import com.cmpay.yx.entity.MenuDO;
-import com.cmpay.yx.entity.RoleDO;
 import org.apache.ibatis.annotations.Mapper;
 
-import java.awt.*;
 import java.util.List;
 
 /**
@@ -19,6 +17,7 @@ import java.util.List;
  */
 @Mapper
 public interface IMenuDao extends BaseDao<MenuDO, Long> {
+
     /**
      * 查询所有菜单信息
      * @return List<UserDO>

@@ -13,24 +13,26 @@
         <result column="is_use" property="isUse" jdbcType="BIT" />
     </resultMap>
 
-    <sql id="Base_Column_List" >
+    <sql id="Base_Column_List">
         role_menu_id, rid, mid, create_user_no, create_time, update_user_no, update_time,
         is_use
     </sql>
 
-    <select id="selectAllRoleMenu" resultMap="BaseResultMap" parameterType="java.lang.Long" >
+    <select id="selectAllRoleMenu" resultMap="BaseResultMap">
         select
         <include refid="Base_Column_List" />
         from role_menu
         where is_use = 1
     </select>
 
-    <delete id="delete" parameterType="java.lang.Long" >
-        delete from role_menu
-        where role_menu_id = #{roleMenuId,jdbcType=BIGINT}
-    </delete>
+    <select id="getRoleMenuByRoleMenuId" resultMap="BaseResultMap" parameterType="java.lang.Long" >
+        select
+        <include refid="Base_Column_List" />
+        from role_menu
+        where is_use = 1
+    </select>
 
-    <insert id="insert" parameterType="com.cmpay.yx.entity.RoleMenuDO" >
+    <insert id="insertRoleMenu" parameterType="com.cmpay.yx.entity.RoleMenuDO" >
         insert into role_menu
         <trim prefix="(" suffix=")" suffixOverrides="," >
             <if test="roleMenuId != null" >
@@ -86,7 +88,7 @@
         </trim>
     </insert>
 
-    <update id="update" parameterType="com.cmpay.yx.entity.RoleMenuDO" >
+    <update id="updateRoleMenu" parameterType="com.cmpay.yx.entity.RoleMenuDO" >
         update role_menu
         <set >
             <if test="rid != null" >
@@ -111,6 +113,12 @@
                 is_use = #{isUse,jdbcType=BIT},
             </if>
         </set>
+        where role_menu_id = #{roleMenuId,jdbcType=BIGINT}
+    </update>
+
+    <update id="deleteRoleMenu" parameterType="com.cmpay.yx.entity.RoleMenuDO" >
+        update role_menu
+        set is_use = 0
         where role_menu_id = #{roleMenuId,jdbcType=BIGINT}
     </update>
 
