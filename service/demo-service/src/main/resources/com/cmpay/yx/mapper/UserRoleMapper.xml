@@ -146,18 +146,18 @@
         </where>
     </select>
 
-    <insert id="insertUserRole" parameterType="list">
-        insert into user_role(<include refid="Base_Column_List" />)
-        values
-        <foreach collection="list" item="item" separator=",">
-            (#{item.userRoleId},#{item.uid},#{item.rid},#{item.createUserNo},#{item.createTime},
-            #{item.updateUserNo},#{item.updateTime}#{item.isUse})
-        </foreach>
-    </insert>
 
-    <update id="deleteUserRole">
+    <update id="deleteUserRoleBatch">
         update user_role
         set  is_use = 0
         where uid = #{uid,jdbcType=BIGINT}
     </update>
+    <insert id="insertUserRoleBatch" parameterType="list">
+        insert into user_role(<include refid="Base_Column_List" />)
+        values
+        <foreach collection="list" item="item" separator=",">
+            (#{item.userRoleId,jdbcType=BIGINT},#{item.uid,jdbcType=BIGINT},#{item.rid,jdbcType=BIGINT},
+            #{item.createUserNo},#{item.createTime},#{item.updateUserNo},#{item.updateTime}#{item.isUse})
+        </foreach>
+    </insert>
 </mapper>

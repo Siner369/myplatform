@@ -1,6 +1,6 @@
 /*
  * @ClassName IUserDao
- * @Description 
+ * @Description
  * @version 1.0
  * @Date 2020-06-22 10:23:41
  */
@@ -9,6 +9,7 @@ package com.cmpay.yx.dao;
 import com.cmpay.lemon.framework.dao.BaseDao;
 import com.cmpay.yx.bo.UserInfoBO;
 import com.cmpay.yx.entity.UserDO;
+import com.cmpay.yx.entity.UserRoleDO;
 import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Param;
 
@@ -59,6 +60,5 @@ public interface IUserDao extends BaseDao<UserDO, Long> {
      * @return
      */
     int deleteUser(Long uid);
-
 
 }

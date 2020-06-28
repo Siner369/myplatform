@@ -27,13 +27,14 @@ public interface UserService {
     /**
      * 新增用户方法
      * @param userInfoBO
+     * @return int
      */
-    void insertUser(UserInfoBO userInfoBO);
+    int insertUser(UserInfoBO userInfoBO);
 
     /**
      * 根据ID找用户
      * @param uid
-     * @return
+     * @return UserInfoBO
      */
     UserInfoBO getUserByUid(Long uid);
 
@@ -48,13 +49,6 @@ public interface UserService {
      * @param uid
      */
     void deleteUser(Long uid);
-
-    /**
-     * 批量插入用户所带的角色
-     * @param userRoleBO
-     * @return int
-     */
-    int batchInsertUserRole(UserRoleBO userRoleBO);
 
     /**
      * 批量删除跟此UID有关的数据

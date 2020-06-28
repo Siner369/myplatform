@@ -137,4 +137,12 @@
         set  is_use = 0
         where rid = #{rid,jdbcType=BIGINT}
     </update>
+    <update id="updateRoleMenuBatch" parameterType="list">
+        update role_menu(mid,update_user_no, update_time)
+        values
+        <foreach collection="list" item="item" separator=",">
+            (#{item.mid,jdbcType=BIGINT},#{item.updateUserNo,jdbcType=BIGINT},#{item.updateTime,jdbcType=TIMESTAMP})
+            where rid = #{item.rid,jdbcType=BIGINT}
+        </foreach>
+    </update>
 </mapper>

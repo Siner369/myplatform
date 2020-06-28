@@ -2,15 +2,12 @@ package com.cmpay.yx.controller;
 
 import com.cmpay.lemon.common.utils.BeanUtils;
 import com.cmpay.lemon.framework.utils.IdGenUtils;
-import com.cmpay.lemon.framework.annotation.QueryBody;
 import com.cmpay.lemon.framework.data.DefaultRspDTO;
 import com.cmpay.lemon.framework.data.NoBody;
-import com.cmpay.lemon.framework.page.PageInfo;
 import com.cmpay.yx.bo.UserInfoBO;
 import com.cmpay.yx.bo.UserRoleBO;
 import com.cmpay.yx.dto.UserInfoDTO;
 import com.cmpay.yx.dto.UserInfoQueryRspDTO;
-import com.cmpay.yx.dto.UserInfoRspDTO;
 import com.cmpay.yx.dto.UserRoleReqDTO;
 import com.cmpay.yx.entity.UserDO;
 import com.cmpay.yx.service.UserService;
@@ -53,15 +50,12 @@ public class UserController {
         return userRspDTO;
     }
 
-    /**
-     * 新增用户
-     * @param userInfoDTO
-     * @return
-     */
     @PostMapping("/insertUser")
     public DefaultRspDTO<NoBody> insertUser( UserInfoDTO userInfoDTO) {
+        // 舟老板写的ID生成器
         Long randomId = Long.valueOf(IdGenUtils.generateId("YX_ID"));
 
+        //转换DTO--BO对象
         UserInfoDTO dto = userInfoDTO;
         UserInfoBO bo = new UserInfoBO();
         BeanUtils.copyProperties(bo, dto);
@@ -70,20 +64,6 @@ public class UserController {
         return DefaultRspDTO.newSuccessInstance();
     }
 
-    /*@GetMapping("/login")
-    public UserInfoRspDTO login(UserInfoDTO dto) {
-        // new 一个BO 把 DTO转换成BO  交给service
-        UserInfoBO bo = new UserInfoBO();
-        BeanUtils.copyProperties(dto, bo);
-
-        // service 把BO 操作一下 交给底层 并返回搜索到的对象
-        UserInfoBO login = userService.login(bo);
-
-        // 再new一个 RspDTO  将搜索到的对象转换成RspDTO的格式
-        UserInfoRspDTO rspDTO = new UserInfoRspDTO();
-        BeanUtils.copyProperties(login,rspDTO);
-        return rspDTO;
-    }*/
 
     @PostMapping("/updateUser")
     public DefaultRspDTO<NoBody> updateUser(@RequestBody UserInfoDTO userInfoDTO) {
@@ -108,7 +88,7 @@ public class UserController {
         return DefaultRspDTO.newSuccessInstance();
     }
 
-    public DefaultRspDTO<NoBody> batchInsertUserRole(UserRoleReqDTO dto){
+/*    public DefaultRspDTO<NoBody> batchInsertUserRole(UserRoleReqDTO dto){
         UserRoleBO bo = new UserRoleBO();
         BeanUtils.copyProperties(dto, bo);
         // 批量增加成功的个数  应该有一个提示的东西
@@ -120,7 +100,7 @@ public class UserController {
     public DefaultRspDTO<NoBody> batchDeleteUserRole(Long uid) {
         int i = userService.batchDeleteUserRole(uid);
         return DefaultRspDTO.newSuccessInstance();
-    }
+    }*/
 
 
 }

@@ -18,12 +18,12 @@
     </resultMap>
 
     <sql id="Base_Column_List" >
-        uid, username, password, name, email, mobile, state, create_user_no, create_time, 
+        uid, username, password, name, email, mobile, state, create_user_no, create_time,
         update_user_no, update_time, is_use
     </sql>
 
     <select id="getUserByUid" resultMap="BaseResultMap" parameterType="java.lang.Long" >
-        select 
+        select
         <include refid="Base_Column_List" />
         from t_user
         where uid = #{uid,jdbcType=BIGINT} and is_use = 1
@@ -143,7 +143,7 @@
     </update>
 
     <select id="find" resultMap="BaseResultMap" parameterType="com.cmpay.yx.entity.UserDO" >
-        select 
+        select
         <include refid="Base_Column_List" />
         from t_user
         <where >
@@ -209,5 +209,7 @@
         </set>
         where uid = #{uid,jdbcType=BIGINT}
     </update>
+
+
 
 </mapper>

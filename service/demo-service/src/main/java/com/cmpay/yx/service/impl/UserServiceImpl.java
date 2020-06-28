@@ -57,17 +57,42 @@ public class UserServiceImpl implements UserService {
 
     @Override
     @Transactional(propagation = Propagation.REQUIRED, rollbackFor = Exception.class)
-    public void insertUser(UserInfoBO userInfoBO) {
-        UserInfoBO bo = userInfoBO;
+    public int insertUser(UserInfoBO userInfoBO) {
+
         UserDO userDO = new UserDO();
-        bo.setCreateTime(LocalDateTime.now());
-        bo.setUpdateTime(LocalDateTime.now());
-        bo.setState((byte) 1);
-        BeanUtils.copyProperties(userDO,userInfoBO);
-        int i = userDao.insertUser(userDO);
-        if (i != 1) {
+        UserInfoBO bo = userInfoBO;
+        // 这个list要批量插入user_role表
+        List<UserRoleDO> tarList = new ArrayList<>();
+
+        // 这个list是用来帮上面迭代安置bean的
+        List<Long> midList = userInfoBO.getRidList();
+        // 迭代bean，把这个list插入角色菜单表，
+        // 两个插入方法都是写在一个service里的，毕竟是原子操作 插入用户，他的角色也要跟着一起插入
+        Long urId = RandomUtils.nextLong();
+        for (int i = 0; i < midList.size(); i++) {
+
+            UserRoleDO userRoleDO = new UserRoleDO();
+            userRoleDO.setUserRoleId(urId);
+            userRoleDO.setUid(userInfoBO.getUid());
+            userRoleDO.setRid(midList.get(i));
+            userRoleDO.setCreateTime(LocalDateTime.now());
+            userRoleDO.setCreateUserNo(userInfoBO.getCreateUserNo());
+            userRoleDO.setUpdateTime(LocalDateTime.now());
+            userRoleDO.setUpdateUserNo(userInfoBO.getUpdateUserNo());
+            userRoleDO.setIsUse(true);
+
+            tarList.add(userRoleDO);
+        }
+        // 角色表的插入
+        BeanUtils.copyProperties(userDO,bo);
+        int res1 = userDao.insertUser(userDO);
+
+        // 角色菜单表的插入
+        int res2 = userRoleDao.insertUserRoleBatch(tarList);
+        if (res1 != 1) {
             BusinessException.throwBusinessException(MsgEnum.DB_INSERT_FAILED);
         }
+        return res2;
     }
 
     @Override
@@ -92,7 +117,7 @@ public class UserServiceImpl implements UserService {
     }
 
     /**
-     * sha
+     * 删除用户
      * @param uid
      */
     @Override
@@ -105,36 +130,13 @@ public class UserServiceImpl implements UserService {
     }
 
     /**
-     * 插入
-     * @param userRoleBO
-     * @return
-     */
-    @Override
-    @Transactional(propagation = Propagation.REQUIRED, rollbackFor = Exception.class)
-    public int batchInsertUserRole(UserRoleBO userRoleBO) {
-        List<UserRoleDO> list = new ArrayList<>();
-        // 获取用户id
-        Long uid = userRoleBO.getUserId();
-        // 获取角色有多少个
-        int length = userRoleBO.getRidList().size();
-        //循环创建DO  准备塞到数据库里
-        for (int i = 0; i < length; i++) {
-            Long randomId = Long.valueOf(IdGenUtils.generateId("YX_ID"));
-            Long rid = userRoleBO.getRidList().get(i);
-            list.add(new UserRoleDO(randomId,uid,rid,1L,LocalDateTime.now(),1L,LocalDateTime.now(),true));
-        }
-        int i = userRoleDao.insertUserRole(list);
-        return i;
-    }
-
-    /**
-     * 删除
+     * 批量删除用户角色
      * @param uid
      * @return
      */
     @Override
     public int batchDeleteUserRole(Long uid) {
-        return userRoleDao.deleteUserRole(uid);
+        return userRoleDao.deleteUserRoleBatch(uid);
     }
 
 

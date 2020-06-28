@@ -69,4 +69,6 @@ public interface IRoleMenuDao extends BaseDao<RoleMenuDO, Long> {
      * @return
      */
     int deleteRoleMenuBatch(Long rid);
+
+    int updateRoleMenuBatch(List<RoleMenuDO> roleMenuDOList);
 }

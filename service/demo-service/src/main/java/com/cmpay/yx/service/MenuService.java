@@ -1,7 +1,9 @@
 package com.cmpay.yx.service;
 
 import com.cmpay.yx.bo.MenuBO;
+import com.cmpay.yx.bo.RoleMenuBO;
 import com.cmpay.yx.entity.MenuDO;
+import com.cmpay.yx.entity.RoleMenuDO;
 
 import java.util.List;
 
@@ -42,5 +44,10 @@ public interface MenuService {
      * @return
      */
     void deleteMenu(Long mid);
+
+    // 下面是角色菜单表的所有方法
+
+
+    /////////////////////////////////////////
 
 }

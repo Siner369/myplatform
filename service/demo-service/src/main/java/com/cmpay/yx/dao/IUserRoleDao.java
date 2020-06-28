@@ -21,16 +21,16 @@ public interface IUserRoleDao extends BaseDao<UserRoleDO, Long> {
 
 
     /**
-     * 批量插入用户角色表
-     * @param ridList
-     * @return
-     */
-    int insertUserRole(List<UserRoleDO> ridList);
-
-    /**
      * 批量删除跟此UID有关的所有角色信息
      * @param uid
      * @return
      */
-    int deleteUserRole(Long uid);
+    int deleteUserRoleBatch(Long uid);
+
+    /**
+     * 批量增加用户角色表
+     * @param tarList
+     * @return
+     */
+    int insertUserRoleBatch(List<UserRoleDO> tarList);
 }

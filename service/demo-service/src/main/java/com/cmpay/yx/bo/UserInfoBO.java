@@ -6,6 +6,7 @@ import lombok.NoArgsConstructor;
 import lombok.ToString;
 
 import java.time.LocalDateTime;
+import java.util.List;
 
 /**
  * @author Administrator
@@ -57,4 +58,8 @@ public class UserInfoBO {
      * @Fields updateTime 创建时间
      */
     private LocalDateTime updateTime;
+    /**
+     * @Fields ridList 这个用户所拥有的角色id的List
+     */
+    private List<Long> ridList;
 }

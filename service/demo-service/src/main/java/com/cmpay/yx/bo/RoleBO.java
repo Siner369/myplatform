@@ -1,11 +1,13 @@
 package com.cmpay.yx.bo;
 
+import com.cmpay.yx.entity.RoleMenuDO;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 import lombok.ToString;
 
 import java.time.LocalDateTime;
+import java.util.List;
 
 /**
  * @author Administrator
@@ -41,4 +43,8 @@ public class RoleBO {
      * @Fields updateTime 创建时间
      */
     private LocalDateTime updateTime;
+    /**
+     * @Fields midList 菜单id列表
+     */
+    private List<Long> midList;
 }

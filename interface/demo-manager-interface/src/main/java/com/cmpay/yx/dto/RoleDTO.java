@@ -1,5 +1,6 @@
 package com.cmpay.yx.dto;
 
+import com.cmpay.yx.entity.RoleMenuDO;
 import lombok.Data;
 import lombok.ToString;
 
@@ -7,38 +8,23 @@ import java.time.LocalDateTime;
 import java.util.List;
 
 /**
- *
  * @author Administrator
  */
 @Data
 @ToString
-public class UserInfoDTO {
-
-    private Long uid;
+public class RoleDTO {
     /**
-     * @Fields username 用户名
+     * @Fields rid 角色ID
      */
-    private String username;
+    private Long rid;
     /**
-     * @Fields password 密码
+     * @Fields roleName 角色名
      */
-    private String password;
+    private String roleName;
     /**
-     * @Fields name 姓名
+     * @Fields roleNote 备注
      */
-    private String name;
-    /**
-     * @Fields email 邮箱
-     */
-    private String email;
-    /**
-     * @Fields mobile 手机号
-     */
-    private String mobile;
-    /**
-     * @Fields state 禁用 或者 正常
-     */
-    private Byte state;
+    private String roleNote;
     /**
      * @Fields createUserNo 创建人
      */
@@ -56,8 +42,7 @@ public class UserInfoDTO {
      */
     private LocalDateTime updateTime;
     /**
-     * @Fields ridList 这个用户所拥有的角色id的List
+     * @Fields midList 菜单id列表
      */
-    private List<Long> ridList;
-
+    private List<Long> midList;
 }

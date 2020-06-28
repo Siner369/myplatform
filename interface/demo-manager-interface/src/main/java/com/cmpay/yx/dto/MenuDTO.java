@@ -4,41 +4,45 @@ import lombok.Data;
 import lombok.ToString;
 
 import java.time.LocalDateTime;
-import java.util.List;
 
 /**
- *
  * @author Administrator
  */
 @Data
 @ToString
-public class UserInfoDTO {
-
-    private Long uid;
+public class MenuDTO {
     /**
-     * @Fields username 用户名
+     * @Fields mid 菜单ID
      */
-    private String username;
+    private Long mid;
     /**
-     * @Fields password 密码
+     * @Fields menuType 菜单名称
      */
-    private String password;
+    private String menuType;
     /**
-     * @Fields name 姓名
+     * @Fields superMenuId 上级菜单ID 默认0
      */
-    private String name;
+    private Integer superMenuId;
     /**
-     * @Fields email 邮箱
+     * @Fields menuName 菜单名称
      */
-    private String email;
+    private String menuName;
     /**
-     * @Fields mobile 手机号
+     * @Fields menuLink 菜单链接
      */
-    private String mobile;
+    private String menuLink;
     /**
-     * @Fields state 禁用 或者 正常
+     * @Fields redirect 重定向
      */
-    private Byte state;
+    private String redirect;
+    /**
+     * @Fields menuEnglishName 菜单英文名称
+     */
+    private String menuEnglishName;
+    /**
+     * @Fields authMark 授权标识
+     */
+    private String authMark;
     /**
      * @Fields createUserNo 创建人
      */
@@ -55,9 +59,4 @@ public class UserInfoDTO {
      * @Fields updateTime 创建时间
      */
     private LocalDateTime updateTime;
-    /**
-     * @Fields ridList 这个用户所拥有的角色id的List
-     */
-    private List<Long> ridList;
-
 }
