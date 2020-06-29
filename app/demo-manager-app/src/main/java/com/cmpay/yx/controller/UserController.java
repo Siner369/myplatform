@@ -1,15 +1,20 @@
 package com.cmpay.yx.controller;
 
+import com.cmpay.framework.data.request.GenericDTO;
+import com.cmpay.framework.data.response.GenericRspDTO;
 import com.cmpay.lemon.common.utils.BeanUtils;
+import com.cmpay.lemon.framework.annotation.QueryBody;
+import com.cmpay.lemon.framework.page.PageInfo;
+import com.cmpay.lemon.framework.security.SecurityUtils;
+import com.cmpay.lemon.framework.security.UserInfoBase;
 import com.cmpay.lemon.framework.utils.IdGenUtils;
 import com.cmpay.lemon.framework.data.DefaultRspDTO;
 import com.cmpay.lemon.framework.data.NoBody;
 import com.cmpay.yx.bo.UserInfoBO;
-import com.cmpay.yx.bo.UserRoleBO;
 import com.cmpay.yx.dto.UserInfoDTO;
 import com.cmpay.yx.dto.UserInfoQueryRspDTO;
-import com.cmpay.yx.dto.UserRoleReqDTO;
 import com.cmpay.yx.entity.UserDO;
+import com.cmpay.yx.enums.MsgEnum;
 import com.cmpay.yx.service.UserService;
 import org.springframework.web.bind.annotation.*;
 
@@ -21,19 +26,28 @@ import java.util.List;
  * @author yexing
  */
 @RestController
-@RequestMapping("/user")
+@RequestMapping("/v1/ui-template/user")
 public class UserController {
 
     @Resource
     private UserService userService;
 
 
+    @GetMapping("/info")
+    public GenericRspDTO<UserInfoDTO> getUserInfo(@QueryBody GenericDTO genericDTO) {
+        UserInfoBase loginUser = SecurityUtils.getLoginUser();
+        UserInfoBO userInfoBO = userService.getUserByUid(Long.valueOf(loginUser.getUserId()));
+        UserInfoDTO userInfoDTO = BeanUtils.copyPropertiesReturnDest(new UserInfoDTO(),userInfoBO);
+        return GenericRspDTO.newInstance(MsgEnum.SUCCESS, userInfoDTO);
+    }
+
+
     /**
      * 分页查询用户信息
      * @return
      */
-    @GetMapping("/getAllUser")
-    public @ResponseBody UserInfoQueryRspDTO selectAllUser(){
+    @GetMapping("/list")
+    public  GenericRspDTO<UserInfoQueryRspDTO> getUserList(@QueryBody UserInfoDTO userInfoDTO){
         // 新建两个list 分别是DO和存Rsp的数组
         List<UserDO> userDOList = userService.selectAllUser();
         List<UserInfoDTO> dtoList = new ArrayList<>();
@@ -47,11 +61,18 @@ public class UserController {
         // 设定list
         UserInfoQueryRspDTO userRspDTO = new UserInfoQueryRspDTO();
         userRspDTO.setList(dtoList);
-        return userRspDTO;
+
+        PageInfo<UserInfoDTO> pageInfo = new PageInfo<UserInfoDTO>(dtoList);
+
+        userRspDTO.setPageNum(pageInfo.getPageNum());
+        userRspDTO.setPageSize(pageInfo.getPageSize());
+        userRspDTO.setPages(pageInfo.getPages());
+        userRspDTO.setTotal(pageInfo.getTotal());
+        return GenericRspDTO.newInstance(MsgEnum.SUCCESS,userRspDTO);
     }
 
-    @PostMapping("/insertUser")
-    public DefaultRspDTO<NoBody> insertUser( UserInfoDTO userInfoDTO) {
+    @PostMapping("/save")
+    public DefaultRspDTO<NoBody> insertUser(@RequestBody UserInfoDTO userInfoDTO) {
         // 舟老板写的ID生成器
         Long randomId = Long.valueOf(IdGenUtils.generateId("YX_ID"));
 
@@ -60,6 +81,7 @@ public class UserController {
         UserInfoBO bo = new UserInfoBO();
         BeanUtils.copyProperties(bo, dto);
         bo.setUid(randomId);
+        bo.setRidList(userInfoDTO.getRidList());
         userService.insertUser(bo);
         return DefaultRspDTO.newSuccessInstance();
     }

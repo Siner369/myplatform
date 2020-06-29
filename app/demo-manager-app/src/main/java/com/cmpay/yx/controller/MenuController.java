@@ -17,7 +17,7 @@ import javax.annotation.Resource;
  * @author yexing
  */
 @RestController
-@RequestMapping("/menu")
+@RequestMapping("/v1/ui-template/menu")
 public class MenuController {
 
     @Resource

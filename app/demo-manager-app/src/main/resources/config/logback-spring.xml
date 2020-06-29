@@ -206,7 +206,7 @@
     </logger>
 
     <!-- print sql -->
-    <logger name="com.cmpay.test.dao" level="${sqlLevel}" additivity="true">
+    <logger name="com.cmpay.yx.dao" level="${sqlLevel}" additivity="true">
     </logger>
 
     <logger name="icsInvokerLogger" level="INFO" additivity="false">

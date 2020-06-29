@@ -1,12 +1,18 @@
 package com.cmpay.yx.controller;
 
+import com.cmpay.framework.data.request.GenericDTO;
+import com.cmpay.framework.data.response.GenericRspDTO;
 import com.cmpay.lemon.common.utils.BeanUtils;
+import com.cmpay.lemon.framework.annotation.QueryBody;
 import com.cmpay.lemon.framework.data.DefaultRspDTO;
 import com.cmpay.lemon.framework.data.NoBody;
+import com.cmpay.lemon.framework.page.PageInfo;
 import com.cmpay.yx.bo.RoleBO;
 import com.cmpay.yx.dto.RoleDTO;
 import com.cmpay.yx.dto.RoleQueryRspDTO;
+import com.cmpay.yx.dto.UserInfoDTO;
 import com.cmpay.yx.entity.RoleDO;
+import com.cmpay.yx.enums.MsgEnum;
 import com.cmpay.yx.service.RoleService;
 import org.apache.commons.lang.math.RandomUtils;
 import org.springframework.web.bind.annotation.*;
@@ -19,13 +25,13 @@ import java.util.List;
  * @author yexing
  */
 @RestController
-@RequestMapping("/role")
+@RequestMapping("/v1/ui-template/role")
 public class RoleController {
     @Resource
     private RoleService roleService;
 
-    @GetMapping("/getAllRole")
-    public @ResponseBody RoleQueryRspDTO selectAllUser(){
+    @GetMapping("/list")
+    public GenericRspDTO<RoleQueryRspDTO> selectRole(@QueryBody GenericDTO genericDTO){
         // 新建两个list 分别是DO和存Rsp的数组
         List<RoleDO> roleDOList = roleService.selectAllRole();
         List<RoleDTO> dtoList = new ArrayList<>();
@@ -40,11 +46,18 @@ public class RoleController {
         // 前台列表显示
         RoleQueryRspDTO roleQueryRspDTO = new RoleQueryRspDTO();
         roleQueryRspDTO.setList(dtoList);
-        return roleQueryRspDTO;
+
+        PageInfo<RoleDTO> pageInfo = new PageInfo<RoleDTO>(dtoList);
+
+        roleQueryRspDTO.setPageNum(pageInfo.getPageNum());
+        roleQueryRspDTO.setPageSize(pageInfo.getPageSize());
+        roleQueryRspDTO.setPages(pageInfo.getPages());
+        roleQueryRspDTO.setTotal(pageInfo.getTotal());
+        return GenericRspDTO.newInstance(MsgEnum.SUCCESS,roleQueryRspDTO);
     }
 
 
-    @PostMapping("/insertRole")
+    @PostMapping("/save")
     public DefaultRspDTO<NoBody> insertRole(@RequestBody RoleDTO roleDTO) {
         // 随机生成rid, ID生成器在UserController使用过
         Long randomId = RandomUtils.nextLong();
@@ -60,7 +73,7 @@ public class RoleController {
     }
 
 
-    @PostMapping("/updateRole")
+    @PostMapping("/update")
     public DefaultRspDTO<NoBody> updateUser(@RequestBody RoleDTO roleDTO) {
         RoleDTO dto = roleDTO;
         RoleBO bo = new RoleBO();
@@ -81,7 +94,7 @@ public class RoleController {
         return DefaultRspDTO.newSuccessInstance(dto);
     }
 
-    @GetMapping("/deleteRole/{rid}")
+    @GetMapping("/delete/{rid}")
     public DefaultRspDTO<NoBody> deleteMenu(@PathVariable Long rid) {
         //TODO:service层要手动“级联”删除 一下 角色菜单表里 与这个rid相关联的数据（假删除）
         roleService.deleteRole(rid);

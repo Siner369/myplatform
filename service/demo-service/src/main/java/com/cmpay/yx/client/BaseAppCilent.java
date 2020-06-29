@@ -4,6 +4,9 @@ import com.cmpay.lemon.framework.stream.Source;
 import com.cmpay.lemon.framework.stream.StreamClient;
 import com.cmpay.yx.bo.UserInfoBO;
 
+/**
+ * @author Administrator
+ */
 @StreamClient("buidemoa")
 public interface BaseAppCilent {
 

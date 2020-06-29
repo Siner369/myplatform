@@ -89,7 +89,7 @@ lemon:
       principalNameExpression: username
     #认证地址
     authentication:
-      loginPathPrefix: /user/login              #默认 /security/login
+      loginPathPrefix: /v1/ui-template/login             #默认 /security/login
       refreshPath: /v1/bui/refresh                #默认 /security/refresh
       logoutPath: /v1/bui/logout                  #默认 /security/logout
     authorizeRequests:

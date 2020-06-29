@@ -31,8 +31,51 @@ public class MenuServiceImpl implements MenuService {
 
     @Override
     public List<MenuDO> selectAllMenu() {
+
         return menuDao.selectAllMenu();
     }
+
+    //=================递归查询所有菜单=================
+
+
+
+
+   /* private List<MenuDTO> buildMenu(List<MenuDTO> menuList) {
+        //最终返回的list集合
+        List<MenuDTO> finalNode = new ArrayList<>();
+        for (MenuDTO menuInfoNode : menuList){
+            //得到顶层pid=0的递归入口
+            if(menuInfoNode.getPid().equals(0L)){
+                //顶层等级为1
+                menuInfoNode.setLevel(1);
+                //根据顶层，逐渐向下查询其子菜单，封装到finalNode
+                finalNode.add(selectChildren(menuInfoNode,menuList));
+            }
+        }
+        return finalNode;
+    }*/
+
+
+   /* private MenuInfoDTO selectChildren(MenuInfoDTO menuInfoNode, List<MenuInfoDTO> menuList) {
+        //因为向一层里面放二层，二层放三层，把对象初始话  防止出现空指针异常
+        menuInfoNode.setChildren(new ArrayList<>());
+        for(MenuInfoDTO it : menuList){
+            //判断id和pid是否相等
+            if(menuInfoNode.getId().equals(it.getPid())){
+                //如果相等 子菜单等级等于父菜单等级+1
+                int level = menuInfoNode.getLevel()+1;
+                it.setLevel(level);
+                //所有children为空，进行初始话操作
+                if(menuInfoNode.getChildren() == null){
+                    menuInfoNode.setChildren(new ArrayList<MenuInfoDTO>());
+                }
+                //把查询出来的子菜单放到父菜单中
+                menuInfoNode.getChildren().add(selectChildren(it,menuList));
+            }
+        }
+        return menuInfoNode;
+    }*/
+    // 递归查询完
 
     @Override
     @Transactional(propagation = Propagation.REQUIRED, rollbackFor = Exception.class)

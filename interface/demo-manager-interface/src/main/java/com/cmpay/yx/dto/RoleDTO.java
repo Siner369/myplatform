@@ -1,6 +1,5 @@
 package com.cmpay.yx.dto;
 
-import com.cmpay.yx.entity.RoleMenuDO;
 import lombok.Data;
 import lombok.ToString;
 
