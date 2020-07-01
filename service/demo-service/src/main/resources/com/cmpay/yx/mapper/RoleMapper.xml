@@ -14,7 +14,7 @@
     </resultMap>
 
     <sql id="Base_Column_List" >
-        rid, role_name, role_note, create_user_no, create_time, update_user_no, update_time, 
+        rid, role_name, role_note, create_user_no, create_time, update_user_no, update_time,
         is_use
     </sql>
 
@@ -113,7 +113,7 @@
     </update>
 
     <select id="find" resultMap="BaseResultMap" parameterType="com.cmpay.yx.entity.RoleDO" >
-        select 
+        select
         <include refid="Base_Column_List" />
         from role
         <where >
@@ -149,8 +149,12 @@
         set is_use = 0
         where rid = #{rid,jdbcType=BIGINT}
     </update>
-    <delete id="batchDeleteRole">
-
+    <delete id="batchDeleteRole" parameterType="list">
+        update role set is_use = 0
+        where rid in
+        <foreach item="id" collection="list" open="(" close=")" separator=",">
+            #{id}
+        </foreach>
     </delete>
 
 </mapper>

@@ -19,6 +19,7 @@ import java.util.List;
 public interface IUserRoleDao extends BaseDao<UserRoleDO, Long> {
 
 
+    UserRoleDO getUserRole(Long userRoleId);
 
     /**
      * 批量删除跟此UID有关的所有角色信息

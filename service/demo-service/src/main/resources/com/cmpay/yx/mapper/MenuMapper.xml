@@ -18,7 +18,7 @@
         <result column="is_use" property="isUse" jdbcType="BIT" />
     </resultMap>
 
-    <sql id="Base_Column_List" >
+    <sql id="Base_Column_List">
         mid, menu_type, super_menu_id, menu_name, menu_link, redirect, menu_english_name,
         auth_mark, create_user_no, create_time, update_user_no, update_time, is_use
     </sql>

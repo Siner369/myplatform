@@ -2,6 +2,7 @@ package com.cmpay.yx.service;
 
 import com.cmpay.yx.bo.MenuBO;
 import com.cmpay.yx.bo.RoleMenuBO;
+import com.cmpay.yx.dto.MenuDTO;
 import com.cmpay.yx.entity.MenuDO;
 import com.cmpay.yx.entity.RoleMenuDO;
 
@@ -15,7 +16,7 @@ public interface MenuService {
      * 查询所有菜单信息
      * @return List<UserDO>
      */
-    List<MenuDO> selectAllMenu();
+    List<MenuDTO> selectAllMenu();
 
     /**
      *新增菜单

@@ -1,8 +1,11 @@
 package com.cmpay.yx.service.impl;
 
 import com.cmpay.lemon.common.exception.BusinessException;
+import com.cmpay.lemon.framework.page.PageInfo;
 import com.cmpay.lemon.framework.utils.IdGenUtils;
+import com.cmpay.lemon.framework.utils.PageUtils;
 import com.cmpay.yx.bo.UserInfoBO;
+import com.cmpay.yx.bo.UserQueryBO;
 import com.cmpay.yx.bo.UserRoleBO;
 import com.cmpay.yx.dao.IUserDao;
 import com.cmpay.yx.dao.IUserRoleDao;
@@ -34,8 +37,11 @@ public class UserServiceImpl implements UserService {
     private IUserRoleDao userRoleDao;
 
     @Override
-    public List<UserDO> selectAllUser() {
-        return userDao.selectAllUser();
+    public PageInfo<UserDO> selectAllUser(UserQueryBO queryBO) {
+        UserDO userDO = new UserDO();
+        UserQueryBO bo = queryBO;
+        BeanUtils.copyProperties(userDO,bo);
+        return PageUtils.pageQueryWithCount(queryBO.getPageNum(), queryBO.getPageSize(), ()->userDao.find(userDO));
     }
 
     @Override
@@ -65,16 +71,15 @@ public class UserServiceImpl implements UserService {
         List<UserRoleDO> tarList = new ArrayList<>();
 
         // 这个list是用来帮上面迭代安置bean的
-        List<Long> midList = userInfoBO.getRidList();
+        List<Long> ridList = userInfoBO.getRidList();
         // 迭代bean，把这个list插入角色菜单表，
         // 两个插入方法都是写在一个service里的，毕竟是原子操作 插入用户，他的角色也要跟着一起插入
         Long urId = RandomUtils.nextLong();
-        for (int i = 0; i < midList.size(); i++) {
-
+        for (int i = 0; i < ridList.size(); i++) {
             UserRoleDO userRoleDO = new UserRoleDO();
             userRoleDO.setUserRoleId(urId);
             userRoleDO.setUid(userInfoBO.getUid());
-            userRoleDO.setRid(midList.get(i));
+            userRoleDO.setRid(ridList.get(i));
             userRoleDO.setCreateTime(LocalDateTime.now());
             userRoleDO.setCreateUserNo(userInfoBO.getCreateUserNo());
             userRoleDO.setUpdateTime(LocalDateTime.now());
@@ -84,6 +89,7 @@ public class UserServiceImpl implements UserService {
             tarList.add(userRoleDO);
         }
         // 角色表的插入
+        userDO.setIsUse(true);
         BeanUtils.copyProperties(userDO,bo);
         int res1 = userDao.insertUser(userDO);
 
@@ -118,12 +124,12 @@ public class UserServiceImpl implements UserService {
 
     /**
      * 删除用户
-     * @param uid
+     * @param uidList
      */
     @Override
     @Transactional(propagation = Propagation.REQUIRED, rollbackFor = Exception.class)
-    public void deleteUser(Long uid) {
-        int i = userDao.deleteUser(uid);
+    public void deleteUser(List<Long> uidList) {
+        int i = userDao.deleteUser(uidList);
         if (i != 1) {
             BusinessException.throwBusinessException(MsgEnum.DB_DELETE_FAILED);
         }

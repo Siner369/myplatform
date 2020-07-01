@@ -4,6 +4,7 @@ import lombok.Data;
 import lombok.ToString;
 
 import java.time.LocalDateTime;
+import java.util.List;
 
 /**
  * @author Administrator
@@ -59,4 +60,8 @@ public class MenuDTO {
      * @Fields updateTime 创建时间
      */
     private LocalDateTime updateTime;
+    /**
+     * @Fields child 子菜单
+     */
+    private List<MenuDTO> children;
 }

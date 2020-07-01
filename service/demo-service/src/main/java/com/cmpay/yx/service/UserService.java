@@ -1,6 +1,8 @@
 package com.cmpay.yx.service;
 
+import com.cmpay.lemon.framework.page.PageInfo;
 import com.cmpay.yx.bo.UserInfoBO;
+import com.cmpay.yx.bo.UserQueryBO;
 import com.cmpay.yx.bo.UserRoleBO;
 import com.cmpay.yx.entity.UserDO;
 import com.cmpay.yx.entity.UserRoleDO;
@@ -11,11 +13,13 @@ import java.util.List;
  * @author yexing
  */
 public interface UserService {
+
     /**
      * 查询所有用户信息
-     * @return List<UserDO>
+     * @param queryBO
+     * @return
      */
-    List<UserDO> selectAllUser();
+    PageInfo<UserDO> selectAllUser(UserQueryBO queryBO);
 
     /**
      * 登录方法
@@ -45,10 +49,10 @@ public interface UserService {
     void updateUser(UserInfoBO userInfoBO);
 
     /**
-     * 删除用户（逻辑删除）
-     * @param uid
+     * 批量删除用户（逻辑删除）
+     * @param uidList
      */
-    void deleteUser(Long uid);
+    void deleteUser(List<Long> uidList);
 
     /**
      * 批量删除跟此UID有关的数据

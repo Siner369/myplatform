@@ -18,11 +18,11 @@
         is_use
     </sql>
 
-    <select id="get" resultMap="BaseResultMap" parameterType="java.lang.Long" >
+    <select id="getUserRole" resultMap="BaseResultMap" parameterType="java.lang.Long" >
         select
         <include refid="Base_Column_List" />
         from user_role
-        where user_role_id = #{userRoleId,jdbcType=BIGINT}
+        where user_role_id = #{userRoleId,jdbcType=BIGINT} and is_use = 1
     </select>
 
     <delete id="delete" parameterType="java.lang.Long" >
@@ -157,7 +157,7 @@
         values
         <foreach collection="list" item="item" separator=",">
             (#{item.userRoleId,jdbcType=BIGINT},#{item.uid,jdbcType=BIGINT},#{item.rid,jdbcType=BIGINT},
-            #{item.createUserNo},#{item.createTime},#{item.updateUserNo},#{item.updateTime}#{item.isUse})
+            #{item.createUserNo},#{item.createTime},#{item.updateUserNo},#{item.updateTime},#{item.isUse})
         </foreach>
     </insert>
 </mapper>

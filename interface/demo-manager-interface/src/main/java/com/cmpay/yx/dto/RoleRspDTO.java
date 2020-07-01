@@ -1,18 +1,14 @@
 package com.cmpay.yx.dto;
 
-import com.cmpay.framework.data.request.GenericDTO;
 import lombok.Data;
 import lombok.ToString;
 
 import java.time.LocalDateTime;
 import java.util.List;
 
-/**
- * @author Administrator
- */
 @Data
 @ToString
-public class RoleDTO extends GenericDTO {
+public class RoleRspDTO {
     /**
      * @Fields rid 角色ID
      */

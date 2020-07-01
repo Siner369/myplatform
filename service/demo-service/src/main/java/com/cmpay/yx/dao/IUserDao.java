@@ -59,6 +59,6 @@ public interface IUserDao extends BaseDao<UserDO, Long> {
      * @param uid
      * @return
      */
-    int deleteUser(Long uid);
+    int deleteUser(List<Long> uid);
 
 }

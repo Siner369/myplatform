@@ -11,15 +11,18 @@ import com.cmpay.lemon.framework.utils.IdGenUtils;
 import com.cmpay.lemon.framework.data.DefaultRspDTO;
 import com.cmpay.lemon.framework.data.NoBody;
 import com.cmpay.yx.bo.UserInfoBO;
-import com.cmpay.yx.dto.UserInfoDTO;
-import com.cmpay.yx.dto.UserInfoQueryRspDTO;
+import com.cmpay.yx.bo.UserQueryBO;
+import com.cmpay.yx.dto.*;
 import com.cmpay.yx.entity.UserDO;
 import com.cmpay.yx.enums.MsgEnum;
 import com.cmpay.yx.service.UserService;
+import org.apache.ibatis.annotations.Delete;
 import org.springframework.web.bind.annotation.*;
 
 import javax.annotation.Resource;
+import java.time.LocalDateTime;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 /**
@@ -47,12 +50,17 @@ public class UserController {
      * @return
      */
     @GetMapping("/list")
-    public  GenericRspDTO<UserInfoQueryRspDTO> getUserList(@QueryBody UserInfoDTO userInfoDTO){
+    public  GenericRspDTO<UserInfoQueryRspDTO> getUserList(@QueryBody UserInfoQueryReqDTO userInfoDTO){
+        //这里是find方法的条件  用以service分页查询
+        UserQueryBO userQueryBO = new UserQueryBO();
+        userQueryBO.setPageNum(userInfoDTO.getPageNum());
+        userQueryBO.setPageSize(userInfoDTO.getPageSize());
+        userQueryBO.setUsername(userInfoDTO.getUserName());
         // 新建两个list 分别是DO和存Rsp的数组
-        List<UserDO> userDOList = userService.selectAllUser();
+        PageInfo<UserDO> userDOPageInfo = userService.selectAllUser(userQueryBO);
         List<UserInfoDTO> dtoList = new ArrayList<>();
         // 脱去敏感信息 转成rsp  rsp里还包含了分页信息
-        userDOList.stream().forEach(item->{
+        userDOPageInfo.getList().stream().forEach(item->{
             // 逐步把DO 转换成DTO 放进dtoList里去
             UserInfoDTO dto = new UserInfoDTO();
             BeanUtils.copyProperties(dto, item);
@@ -60,14 +68,12 @@ public class UserController {
         });
         // 设定list
         UserInfoQueryRspDTO userRspDTO = new UserInfoQueryRspDTO();
+
         userRspDTO.setList(dtoList);
-
-        PageInfo<UserInfoDTO> pageInfo = new PageInfo<UserInfoDTO>(dtoList);
-
-        userRspDTO.setPageNum(pageInfo.getPageNum());
-        userRspDTO.setPageSize(pageInfo.getPageSize());
-        userRspDTO.setPages(pageInfo.getPages());
-        userRspDTO.setTotal(pageInfo.getTotal());
+        userRspDTO.setPageNum(userDOPageInfo.getPageNum());
+        userRspDTO.setPageSize(userDOPageInfo.getPageSize());
+        userRspDTO.setPages(userDOPageInfo.getPages());
+        userRspDTO.setTotal(userDOPageInfo.getTotal());
         return GenericRspDTO.newInstance(MsgEnum.SUCCESS,userRspDTO);
     }
 
@@ -80,33 +86,39 @@ public class UserController {
         UserInfoDTO dto = userInfoDTO;
         UserInfoBO bo = new UserInfoBO();
         BeanUtils.copyProperties(bo, dto);
+        bo.setCreateUserNo(Long.valueOf(SecurityUtils.getLoginUserId()));
+        bo.setCreateTime(LocalDateTime.now());
+        bo.setUpdateUserNo(Long.valueOf(SecurityUtils.getLoginUserId()));
+        bo.setUpdateTime(LocalDateTime.now());
         bo.setUid(randomId);
         bo.setRidList(userInfoDTO.getRidList());
         userService.insertUser(bo);
         return DefaultRspDTO.newSuccessInstance();
     }
 
-
-    @PostMapping("/updateUser")
-    public DefaultRspDTO<NoBody> updateUser(@RequestBody UserInfoDTO userInfoDTO) {
+    @PostMapping("/update")
+    public GenericRspDTO<UserInfoRspDTO> updateUser(UserInfoDTO userInfoDTO) {
         UserInfoBO bo = new UserInfoBO();
         BeanUtils.copyProperties(bo, userInfoDTO);
         userService.updateUser(bo);
-        return DefaultRspDTO.newSuccessInstance();
+        UserInfoRspDTO dto = new UserInfoRspDTO();
+        BeanUtils.copyProperties(dto,bo);
+        return GenericRspDTO.newInstance(MsgEnum.SUCCESS,dto);
     }
 
-    @GetMapping("/getUserByUid/{uid}")
-    public @ResponseBody DefaultRspDTO<UserInfoDTO> getUserByUid(@PathVariable Long uid) {
+    @GetMapping("/info/{uid}")
+    public GenericRspDTO<UserInfoRspDTO> getUserByUid(@PathVariable Long uid) {
         // 调用service的方法  并转换BO
-        UserInfoDTO dto = new UserInfoDTO();
+        UserInfoRspDTO dto = new UserInfoRspDTO();
         UserInfoBO bo = userService.getUserByUid(uid);
         BeanUtils.copyProperties(dto, bo);
-        return DefaultRspDTO.newSuccessInstance(dto);
+        return GenericRspDTO.newInstance(MsgEnum.SUCCESS,dto);
     }
 
-    @GetMapping("/deleteUser/{uid}")
-    public DefaultRspDTO<NoBody> deleteUser(@PathVariable Long uid) {
-        userService.deleteUser(uid);
+    @DeleteMapping("/delete")
+    public DefaultRspDTO<NoBody> deleteUser(@RequestBody UserDeleteReqDTO userDeleteReqDTO) {
+        List<Long> uidList = Arrays.asList(userDeleteReqDTO.getUserIds());
+        userService.deleteUser(uidList);
         return DefaultRspDTO.newSuccessInstance();
     }
 

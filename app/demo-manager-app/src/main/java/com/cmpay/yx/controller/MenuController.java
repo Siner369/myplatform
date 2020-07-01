@@ -1,17 +1,24 @@
 package com.cmpay.yx.controller;
 
+import com.cmpay.framework.data.response.GenericRspDTO;
 import com.cmpay.lemon.common.utils.BeanUtils;
+import com.cmpay.lemon.framework.annotation.QueryBody;
 import com.cmpay.lemon.framework.data.DefaultRspDTO;
 import com.cmpay.lemon.framework.data.NoBody;
+import com.cmpay.lemon.framework.page.PageInfo;
 import com.cmpay.yx.bo.MenuBO;
 import com.cmpay.yx.bo.RoleBO;
-import com.cmpay.yx.dto.MenuDTO;
-import com.cmpay.yx.dto.RoleDTO;
+import com.cmpay.yx.bo.UserQueryBO;
+import com.cmpay.yx.dto.*;
+import com.cmpay.yx.entity.UserDO;
+import com.cmpay.yx.enums.MsgEnum;
 import com.cmpay.yx.service.MenuService;
 import org.apache.commons.lang.math.RandomUtils;
 import org.springframework.web.bind.annotation.*;
 
 import javax.annotation.Resource;
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * @author yexing
@@ -22,6 +29,15 @@ public class MenuController {
 
     @Resource
     private MenuService menuService;
+
+    @GetMapping("/mlist")
+    public GenericRspDTO<MenuQueryRspDTO> getUserList(){
+        List<MenuDTO> menuDTO = menuService.selectAllMenu();
+        // 设定list
+        MenuQueryRspDTO menuQueryRspDTO = new MenuQueryRspDTO();
+        menuQueryRspDTO.setList(menuDTO);
+        return GenericRspDTO.newInstance(MsgEnum.SUCCESS,menuQueryRspDTO);
+    }
 
     @PostMapping("/insertMenu")
     public DefaultRspDTO<NoBody> insertMenu(@RequestBody MenuDTO menuDTO) {
