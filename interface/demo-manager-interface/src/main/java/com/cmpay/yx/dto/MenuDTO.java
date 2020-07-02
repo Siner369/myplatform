@@ -23,7 +23,7 @@ public class MenuDTO {
     /**
      * @Fields superMenuId 上级菜单ID 默认0
      */
-    private Integer superMenuId;
+    private Long superMenuId;
     /**
      * @Fields menuName 菜单名称
      */
@@ -64,4 +64,5 @@ public class MenuDTO {
      * @Fields child 子菜单
      */
     private List<MenuDTO> children;
+
 }

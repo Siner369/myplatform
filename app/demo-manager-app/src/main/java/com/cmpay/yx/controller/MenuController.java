@@ -10,6 +10,7 @@ import com.cmpay.yx.bo.MenuBO;
 import com.cmpay.yx.bo.RoleBO;
 import com.cmpay.yx.bo.UserQueryBO;
 import com.cmpay.yx.dto.*;
+import com.cmpay.yx.entity.MenuDO;
 import com.cmpay.yx.entity.UserDO;
 import com.cmpay.yx.enums.MsgEnum;
 import com.cmpay.yx.service.MenuService;
@@ -30,12 +31,22 @@ public class MenuController {
     @Resource
     private MenuService menuService;
 
-    @GetMapping("/mlist")
-    public GenericRspDTO<MenuQueryRspDTO> getUserList(){
+    @GetMapping("/select")
+    public GenericRspDTO<MenuQueryRspDTO> getMenuList(){
         List<MenuDTO> menuDTO = menuService.selectAllMenu();
         // 设定list
         MenuQueryRspDTO menuQueryRspDTO = new MenuQueryRspDTO();
         menuQueryRspDTO.setList(menuDTO);
+        return GenericRspDTO.newInstance(MsgEnum.SUCCESS,menuQueryRspDTO);
+    }
+
+    @GetMapping("/selectAll")
+    public GenericRspDTO<MenuQueryRspDTO> getMenuNoOrder(){
+        List<MenuDTO> menuDTOList = menuService.getMenuExceptButton();
+
+        // 设定list
+        MenuQueryRspDTO menuQueryRspDTO = new MenuQueryRspDTO();
+        menuQueryRspDTO.setList(menuDTOList);
         return GenericRspDTO.newInstance(MsgEnum.SUCCESS,menuQueryRspDTO);
     }
 

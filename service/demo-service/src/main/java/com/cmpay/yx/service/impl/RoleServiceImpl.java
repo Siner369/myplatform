@@ -99,14 +99,25 @@ public class RoleServiceImpl implements RoleService {
         List<RoleMenuDO> tarList = new ArrayList<>();
         // 迭代bean，把这个list插入角色菜单表，
         // 两个插入方法都是写在一个service里的，毕竟是原子操作 插入角色，他的权限也要跟着一起插入
+        if(midList!=null){
+            for (int i = 0; i < roleBO.getMidList().size(); i++) {
+                RoleMenuDO roleMenuDO = new RoleMenuDO();
+                roleMenuDO.setRid(roleMenuDO.getRid());
+                roleMenuDO.setMid(midList.get(i));
+                roleMenuDO.setUpdateTime(LocalDateTime.now());
+                roleMenuDO.setUpdateUserNo(roleBO.getUpdateUserNo());
 
+                tarList.add(roleMenuDO);
+            }
+            // 角色菜单表的插入
+            int res2 = roleMenuDao.insertRoleMenuBatch(tarList);
+
+        }
         BeanUtils.copyProperties(roleDO,bo);
         int res1 = roleDao.updateRole(roleDO);
-        // 角色菜单表的更新
-        /*int res2 = roleMenuDao.updateRoleMenuBatch(tarList);
-        if (res1==0 || res2 == 0) {
+        if (res1==0) {
             BusinessException.throwBusinessException(MsgEnum.USER_DUPLICATE);
-        }*/
+        }
     }
 
     @Override

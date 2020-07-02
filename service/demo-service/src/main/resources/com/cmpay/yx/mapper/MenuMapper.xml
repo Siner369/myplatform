@@ -5,7 +5,7 @@
     <resultMap id="BaseResultMap" type="com.cmpay.yx.entity.MenuDO" >
         <id column="mid" property="mid" jdbcType="BIGINT" />
         <result column="menu_type" property="menuType" jdbcType="VARCHAR" />
-        <result column="super_menu_id" property="superMenuId" jdbcType="INTEGER" />
+        <result column="super_menu_id" property="superMenuId" jdbcType="BIGINT" />
         <result column="menu_name" property="menuName" jdbcType="VARCHAR" />
         <result column="menu_link" property="menuLink" jdbcType="VARCHAR" />
         <result column="redirect" property="redirect" jdbcType="VARCHAR" />
@@ -92,7 +92,7 @@
                 #{menuType,jdbcType=VARCHAR},
             </if>
             <if test="superMenuId != null" >
-                #{superMenuId,jdbcType=INTEGER},
+                #{superMenuId,jdbcType=BIGINT},
             </if>
             <if test="menuName != null" >
                 #{menuName,jdbcType=VARCHAR},
@@ -134,7 +134,7 @@
                 menu_type = #{menuType,jdbcType=VARCHAR},
             </if>
             <if test="superMenuId != null" >
-                super_menu_id = #{superMenuId,jdbcType=INTEGER},
+                super_menu_id = #{superMenuId,jdbcType=BIGINT},
             </if>
             <if test="menuName != null" >
                 menu_name = #{menuName,jdbcType=VARCHAR},
@@ -173,7 +173,7 @@
                 and menu_type = #{menuType,jdbcType=VARCHAR}
             </if>
             <if test="superMenuId != null" >
-                and super_menu_id = #{superMenuId,jdbcType=INTEGER}
+                and super_menu_id = #{superMenuId,jdbcType=BIGINT}
             </if>
             <if test="menuName != null" >
                 and menu_name = #{menuName,jdbcType=VARCHAR}

@@ -4,6 +4,7 @@ import com.cmpay.lemon.common.exception.BusinessException;
 import com.cmpay.lemon.common.utils.BeanUtils;
 import com.cmpay.yx.bo.MenuBO;
 import com.cmpay.yx.dao.IMenuDao;
+import com.cmpay.yx.dto.MenuDTO;
 import com.cmpay.yx.entity.MenuDO;
 import com.cmpay.yx.enums.MsgEnum;
 import com.cmpay.yx.service.MenuService;
@@ -30,68 +31,49 @@ public class MenuServiceImpl implements MenuService {
     @Override
     public List selectAllMenu() {
         List<MenuDO> menuList = menuDao.selectAllMenu();
-        return buildMenu(menuList,"0");
+        List<MenuDTO> menuDTOList = new ArrayList<>();
+        for (MenuDO menuDO : menuList){
+            MenuDTO menuInfoDTO = new MenuDTO();
+            BeanUtils.copy(menuInfoDTO,menuDO);
+            menuDTOList.add(menuInfoDTO);
+        }
+        return buildMenu(menuDTOList,0L);
     }
 
-    //=================递归查询所有菜单=================
-
-    public List<Map> buildMenu(List<MenuDO> menuList, String parentId){
+    public List<Map> buildMenu(List<MenuDTO> menuList, Long parentId){
         List<Map> mapList = new ArrayList<>();
-        for (MenuDO menu : menuList){
-            if (parentId.equals(menu.getSuperMenuId()+"")){
-                    /*List list = new ArrayList();
-                    list.add(menu);*/
+        for (MenuDTO menu : menuList){
+            if (parentId.equals(menu.getSuperMenuId())){
+
                 Map map = new HashMap(16);
-                map.put("mid",menu.getMid());
+                map.put("id",menu.getMid());
                 map.put("menuName",menu.getMenuName());
                 map.put("menuType",menu.getMenuType());
-                map.put("parentId",menu.getSuperMenuId());
-                map.put("children",buildMenu(menuList,menu.getMid()+""));
+                map.put("authMark",menu.getAuthMark());
+                map.put("pid",menu.getSuperMenuId());
+                map.put("menuEnglishName",menu.getMenuEnglishName());
+                map.put("menuLink",menu.getMenuLink());
+                map.put("redirect",menu.getRedirect());
+                map.put("children",buildMenu(menuList,menu.getMid()));
                 mapList.add(map);
             }
         }
         return mapList;
     }
 
+    /*public List<MenuDTO> buildMenu(List<MenuDTO> menuList, Long parentId){
+        List<MenuDTO> mList = new ArrayList<>();
+        for (MenuDTO menu : menuList){
 
-//////
-/*
-    private List<MenuDTO> buildMenu(List<MenuDTO> menuList) {
-        //最终返回的list集合
-        List<MenuDTO> finalNode = new ArrayList<>();
-        for (MenuDTO menuInfoNode : menuList){
-            //得到顶层pid=0的递归入口
-            if(menuInfoNode.getSuperMenuId().equals(0L)){
-                //顶层等级为1
-                menuInfoNode.setLevel(1);
-                //根据顶层，逐渐向下查询其子菜单，封装到finalNode
-                finalNode.add(selectChildren(menuInfoNode,menuList));
+            if (menu.getSuperMenuId().equals(parentId)){
+                MenuDTO curr = menu;
+                curr.setChildren(buildMenu(menuList,menu.getMid()));
+                mList.add(curr);
             }
         }
-        return finalNode;
-    }
-
-
-    private MenuDTO selectChildren(MenuDTO menuInfoNode, List<MenuDTO> menuList) {
-        //因为向一层里面放二层，二层放三层，把对象初始话  防止出现空指针异常
-        menuInfoNode.setChildren(new ArrayList<>());
-        for(MenuDTO it : menuList){
-            //判断id和pid是否相等
-            if(menuInfoNode.getMid().equals(it.getSuperMenuId())){
-                //如果相等 子菜单等级等于父菜单等级+1
-                int level = menuInfoNode.getLevel()+1;
-                it.setLevel(level);
-                //所有children为空，进行初始话操作
-                if(menuInfoNode.getChildren() == null){
-                    menuInfoNode.setChildren(new ArrayList<MenuDTO>());
-                }
-                //把查询出来的子菜单放到父菜单中
-                menuInfoNode.getChildren().add(selectChildren(it,menuList));
-            }
-        }
-        return menuInfoNode;
+        return mList;
     }*/
-    // 递归查询完
+
 
     @Override
     @Transactional(propagation = Propagation.REQUIRED, rollbackFor = Exception.class)
@@ -122,6 +104,19 @@ public class MenuServiceImpl implements MenuService {
 
     }
 
+    @Override
+    public List<MenuDTO> getMenuExceptButton() {
+        List<MenuDO> menuDOList = menuDao.selectAllMenu();
+        List<MenuDTO> menuDTOList = new ArrayList<>();
+        for (MenuDO menuDO : menuDOList){
+            if (!"button".equals(menuDO.getMenuType())){
+                MenuDTO menuInfoDTO = new MenuDTO();
+                BeanUtils.copy(menuInfoDTO,menuDO);
+                menuDTOList.add(menuInfoDTO);
+            }
+        }
+        return menuDTOList;
+    }
 
 
 }

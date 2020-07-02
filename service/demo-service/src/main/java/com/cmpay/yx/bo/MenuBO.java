@@ -22,7 +22,7 @@ public class MenuBO {
     /**
      * @Fields superMenuId 上级菜单ID 默认0
      */
-    private Integer superMenuId;
+    private Long superMenuId;
     /**
      * @Fields menuName 菜单名称
      */

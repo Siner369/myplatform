@@ -46,9 +46,12 @@ public interface MenuService {
      */
     void deleteMenu(Long mid);
 
-    // 下面是角色菜单表的所有方法
 
+    /**
+     * 获取除了按钮之外的所有菜单
+     * @return
+     */
+    List<MenuDTO> getMenuExceptButton();
 
-    /////////////////////////////////////////
 
 }

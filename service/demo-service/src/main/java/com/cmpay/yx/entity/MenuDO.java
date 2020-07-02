@@ -1,6 +1,6 @@
 /*
  * @ClassName MenuDO
- * @Description 
+ * @Description
  * @version 1.0
  * @Date 2020-06-22 23:41:43
  */
@@ -34,7 +34,7 @@ public class MenuDO extends BaseDO {
     /**
      * @Fields superMenuId 上级菜单ID 默认0
      */
-    private Integer superMenuId;
+    private Long superMenuId;
     /**
      * @Fields menuName 菜单名称
      */
