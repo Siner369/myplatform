@@ -1,6 +1,6 @@
 /*
  * @ClassName RoleMenuDO
- * @Description 
+ * @Description
  * @version 1.0
  * @Date 2020-06-22 23:41:43
  */
@@ -32,9 +32,9 @@ public class RoleMenuDO extends BaseDO {
      */
     private Long rid;
     /**
-     * @Fields mid 菜单ID
+     * @Fields mids 菜单ID
      */
-    private Long mid;
+    private String mids;
     /**
      * @Fields createUserNo 创建人
      */

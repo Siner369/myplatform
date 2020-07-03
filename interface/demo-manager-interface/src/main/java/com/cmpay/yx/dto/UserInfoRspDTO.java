@@ -4,6 +4,7 @@ import lombok.Data;
 import lombok.ToString;
 
 import java.time.LocalDateTime;
+import java.util.List;
 
 /**
  * @author Administrator
@@ -35,4 +36,8 @@ public class UserInfoRspDTO {
      * @Fields createTime 创建时间
      */
     private LocalDateTime createTime;
+    /**
+     * @Fields ridList 拥有的角色列表ID
+     */
+    private List<Long> ridList;
 }

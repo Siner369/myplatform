@@ -1,6 +1,6 @@
 /*
  * @ClassName UserRoleDO
- * @Description 
+ * @Description
  * @version 1.0
  * @Date 2020-06-22 23:41:43
  */
@@ -32,9 +32,9 @@ public class UserRoleDO extends BaseDO {
      */
     private Long uid;
     /**
-     * @Fields rid 角色ID
+     * @Fields ridList 角色ID
      */
-    private Long rid;
+    private String rids;
     /**
      * @Fields createUserNo 创建人
      */

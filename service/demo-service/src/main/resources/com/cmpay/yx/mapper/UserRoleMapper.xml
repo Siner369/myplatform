@@ -5,7 +5,7 @@
     <resultMap id="BaseResultMap" type="com.cmpay.yx.entity.UserRoleDO" >
         <id column="user_role_id" property="userRoleId" jdbcType="BIGINT" />
         <result column="uid" property="uid" jdbcType="BIGINT" />
-        <result column="rid" property="rid" jdbcType="BIGINT" />
+        <result column="rids" property="rids" jdbcType="VARCHAR" />
         <result column="create_user_no" property="createUserNo" jdbcType="BIGINT" />
         <result column="create_time" property="createTime" jdbcType="TIMESTAMP" />
         <result column="update_user_no" property="updateUserNo" jdbcType="BIGINT" />
@@ -14,15 +14,15 @@
     </resultMap>
 
     <sql id="Base_Column_List" >
-        user_role_id, uid, rid, create_user_no, create_time, update_user_no, update_time,
+        user_role_id, uid, rids, create_user_no, create_time, update_user_no, update_time,
         is_use
     </sql>
 
-    <select id="getUserRole" resultMap="BaseResultMap" parameterType="java.lang.Long" >
+    <select id="getUserRole" resultMap="BaseResultMap" parameterType="com.cmpay.yx.entity.UserRoleDO" >
         select
         <include refid="Base_Column_List" />
         from user_role
-        where user_role_id = #{userRoleId,jdbcType=BIGINT} and is_use = 1
+        where uid = #{uid,jdbcType=BIGINT} and is_use = 1
     </select>
 
     <delete id="delete" parameterType="java.lang.Long" >
@@ -30,7 +30,7 @@
         where user_role_id = #{userRoleId,jdbcType=BIGINT}
     </delete>
 
-    <insert id="insert" parameterType="com.cmpay.yx.entity.UserRoleDO" >
+    <insert id="insertUserRole" parameterType="com.cmpay.yx.entity.UserRoleDO" >
         insert into user_role
         <trim prefix="(" suffix=")" suffixOverrides="," >
             <if test="userRoleId != null" >
@@ -39,8 +39,8 @@
             <if test="uid != null" >
                 uid,
             </if>
-            <if test="rid != null" >
-                rid,
+            <if test="rids != null" >
+                rids,
             </if>
             <if test="createUserNo != null" >
                 create_user_no,
@@ -65,8 +65,8 @@
             <if test="uid != null" >
                 #{uid,jdbcType=BIGINT},
             </if>
-            <if test="rid != null" >
-                #{rid,jdbcType=BIGINT},
+            <if test="rids != null" >
+                #{rids,jdbcType=BIGINT},
             </if>
             <if test="createUserNo != null" >
                 #{createUserNo,jdbcType=BIGINT},
@@ -92,8 +92,8 @@
             <if test="uid != null" >
                 uid = #{uid,jdbcType=BIGINT},
             </if>
-            <if test="rid != null" >
-                rid = #{rid,jdbcType=BIGINT},
+            <if test="rids != null" >
+                rid = #{rids,jdbcType=BIGINT},
             </if>
             <if test="createUserNo != null" >
                 create_user_no = #{createUserNo,jdbcType=BIGINT},
@@ -125,8 +125,8 @@
             <if test="uid != null" >
                 and uid = #{uid,jdbcType=BIGINT}
             </if>
-            <if test="rid != null" >
-                and rid = #{rid,jdbcType=BIGINT}
+            <if test="rids != null" >
+                and rid = #{rids,jdbcType=BIGINT}
             </if>
             <if test="createUserNo != null" >
                 and create_user_no = #{createUserNo,jdbcType=BIGINT}
@@ -152,12 +152,15 @@
         set  is_use = 0
         where uid = #{uid,jdbcType=BIGINT}
     </update>
-    <insert id="insertUserRoleBatch" parameterType="list">
-        insert into user_role(<include refid="Base_Column_List" />)
-        values
-        <foreach collection="list" item="item" separator=",">
-            (#{item.userRoleId,jdbcType=BIGINT},#{item.uid,jdbcType=BIGINT},#{item.rid,jdbcType=BIGINT},
-            #{item.createUserNo},#{item.createTime},#{item.updateUserNo},#{item.updateTime},#{item.isUse})
-        </foreach>
-    </insert>
+    <select id="getAllUserRole" resultMap="BaseResultMap">
+        select
+        <include refid="Base_Column_List" />
+        from user_role where is_use = 1
+    </select>
+
+    <select id="getUserRoleList" resultMap="BaseResultMap" parameterType="java.lang.Long">
+        select
+        <include refid="Base_Column_List" />
+        from user_role where uid = #{uid,jdbcType=BIGINT} and is_use = 1
+    </select>
 </mapper>

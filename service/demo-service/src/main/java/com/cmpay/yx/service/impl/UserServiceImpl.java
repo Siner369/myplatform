@@ -67,35 +67,33 @@ public class UserServiceImpl implements UserService {
 
         UserDO userDO = new UserDO();
         UserInfoBO bo = userInfoBO;
-        // 这个list要批量插入user_role表
-        List<UserRoleDO> tarList = new ArrayList<>();
 
         // 这个list是用来帮上面迭代安置bean的
         List<Long> ridList = userInfoBO.getRidList();
         // 迭代bean，把这个list插入角色菜单表，
         // 两个插入方法都是写在一个service里的，毕竟是原子操作 插入用户，他的角色也要跟着一起插入
         Long urId = RandomUtils.nextLong();
-        for (int i = 0; i < ridList.size(); i++) {
-            UserRoleDO userRoleDO = new UserRoleDO();
-            userRoleDO.setUserRoleId(urId);
-            userRoleDO.setUid(userInfoBO.getUid());
-            userRoleDO.setRid(ridList.get(i));
-            userRoleDO.setCreateTime(LocalDateTime.now());
-            userRoleDO.setCreateUserNo(userInfoBO.getCreateUserNo());
-            userRoleDO.setUpdateTime(LocalDateTime.now());
-            userRoleDO.setUpdateUserNo(userInfoBO.getUpdateUserNo());
-            userRoleDO.setIsUse(true);
+        UserRoleDO userRoleDO = new UserRoleDO();
+        userRoleDO.setUserRoleId(urId);
+        userRoleDO.setUid(userInfoBO.getUid());
+        // 这里我重构了rids
+        String join = StringUtils.join(ridList, "-");
+        userRoleDO.setRids(join);
+        userRoleDO.setCreateTime(LocalDateTime.now());
+        userRoleDO.setCreateUserNo(userInfoBO.getCreateUserNo());
+        userRoleDO.setUpdateTime(LocalDateTime.now());
+        userRoleDO.setUpdateUserNo(userInfoBO.getUpdateUserNo());
+        userRoleDO.setIsUse(true);
 
-            tarList.add(userRoleDO);
-        }
+
         // 角色表的插入
         userDO.setIsUse(true);
         BeanUtils.copyProperties(userDO,bo);
         int res1 = userDao.insertUser(userDO);
 
         // 角色菜单表的插入
-        int res2 = userRoleDao.insertUserRoleBatch(tarList);
-        if (res1 != 1) {
+        int res2 = userRoleDao.insertUserRole(userRoleDO);
+        if (res1 != 1 || res2 !=1) {
             BusinessException.throwBusinessException(MsgEnum.DB_INSERT_FAILED);
         }
         return res2;
@@ -105,7 +103,16 @@ public class UserServiceImpl implements UserService {
     public UserInfoBO getUserByUid(Long uid) {
         UserInfoBO bo = new UserInfoBO();
         UserDO userDO = userDao.getUserByUid(uid);
+        List<Long> ridList = new ArrayList<>();
+        UserRoleDO userRole = userRoleDao.getUserRole(uid);
+        if (!"".equals(userRole.getRids())){
+            String[] split = userRole.getRids().split("-");
+            for (int i = 0; i < split.length; i++) {
+                ridList.add(Long.valueOf(split[i]));
+            }
+        }
         BeanUtils.copyProperties(bo,userDO);
+        bo.setRidList(ridList);
         return bo;
     }
 
@@ -116,9 +123,13 @@ public class UserServiceImpl implements UserService {
         UserDO userDO = new UserDO();
         BeanUtils.copyProperties(userDO,userInfoBO);
         userDO.setUpdateTime(LocalDateTime.now());
-        int i = userDao.updateUser(userDO);
-        if (i==0) {
-            BusinessException.throwBusinessException(MsgEnum.USER_DUPLICATE);
+        int updateUser = userDao.updateUser(userDO);
+        List<Long> ridList = userInfoBO.getRidList();
+        UserRoleDO tarDO = userRoleDao.getUserRole(userInfoBO.getUid());
+        tarDO.setRids(StringUtils.join(ridList,"-"));
+        int updateUserRole = userRoleDao.update(tarDO);
+        if (updateUserRole==0 || updateUser == 0) {
+            BusinessException.throwBusinessException(MsgEnum.DB_UPDATE_FAILED);
         }
     }
 

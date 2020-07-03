@@ -45,7 +45,6 @@ public class MenuController {
     @GetMapping("/selectAll")
     public GenericRspDTO<MenuQueryRspDTO> getMenuNoOrder(){
         List<MenuDTO> menuDTOList = menuService.getMenuExceptButton();
-
         // 设定list
         MenuQueryRspDTO menuQueryRspDTO = new MenuQueryRspDTO();
         menuQueryRspDTO.setList(menuDTOList);

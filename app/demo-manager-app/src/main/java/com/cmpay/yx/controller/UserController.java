@@ -16,7 +16,6 @@ import com.cmpay.yx.dto.*;
 import com.cmpay.yx.entity.UserDO;
 import com.cmpay.yx.enums.MsgEnum;
 import com.cmpay.yx.service.UserService;
-import org.apache.ibatis.annotations.Delete;
 import org.springframework.web.bind.annotation.*;
 
 import javax.annotation.Resource;

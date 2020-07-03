@@ -5,7 +5,7 @@
     <resultMap id="BaseResultMap" type="com.cmpay.yx.entity.RoleMenuDO" >
         <id column="role_menu_id" property="roleMenuId" jdbcType="BIGINT" />
         <result column="rid" property="rid" jdbcType="BIGINT" />
-        <result column="mid" property="mid" jdbcType="BIGINT" />
+        <result column="mids" property="mids" jdbcType="VARCHAR" />
         <result column="create_user_no" property="createUserNo" jdbcType="BIGINT" />
         <result column="create_time" property="createTime" jdbcType="TIMESTAMP" />
         <result column="update_user_no" property="updateUserNo" jdbcType="BIGINT" />
@@ -14,7 +14,7 @@
     </resultMap>
 
     <sql id="Base_Column_List">
-        role_menu_id, rid, mid, create_user_no, create_time, update_user_no, update_time,
+        role_menu_id, rid, mids, create_user_no, create_time, update_user_no, update_time,
         is_use
     </sql>
 
@@ -25,11 +25,11 @@
         where is_use = 1
     </select>
 
-    <select id="getRoleMenuByRoleMenuId" resultMap="BaseResultMap" parameterType="java.lang.Long" >
+    <select id="getRoleMenuByRid" resultMap="BaseResultMap" parameterType="java.lang.Long" >
         select
         <include refid="Base_Column_List" />
         from role_menu
-        where is_use = 1
+        where rid = #{rid,jdbcType=BIGINT} and is_use = 1
     </select>
 
     <insert id="insertRoleMenu" parameterType="com.cmpay.yx.entity.RoleMenuDO" >
@@ -41,8 +41,8 @@
             <if test="rid != null" >
                 rid,
             </if>
-            <if test="mid != null" >
-                mid,
+            <if test="mids != null" >
+                mids,
             </if>
             <if test="createUserNo != null" >
                 create_user_no,
@@ -67,8 +67,8 @@
             <if test="rid != null" >
                 #{rid,jdbcType=BIGINT},
             </if>
-            <if test="mid != null" >
-                #{mid,jdbcType=BIGINT},
+            <if test="mids != null" >
+                #{mids,jdbcType=VARCHAR},
             </if>
             <if test="createUserNo != null" >
                 #{createUserNo,jdbcType=BIGINT},
@@ -91,11 +91,8 @@
     <update id="updateRoleMenu" parameterType="com.cmpay.yx.entity.RoleMenuDO" >
         update role_menu
         <set >
-            <if test="rid != null" >
-                rid = #{rid,jdbcType=BIGINT},
-            </if>
-            <if test="mid != null" >
-                mid = #{mid,jdbcType=BIGINT},
+            <if test="mids != null" >
+                mids = #{mids,jdbcType=VARCHAR},
             </if>
             <if test="createUserNo != null" >
                 create_user_no = #{createUserNo,jdbcType=BIGINT},
@@ -113,7 +110,7 @@
                 is_use = #{isUse,jdbcType=BIT},
             </if>
         </set>
-        where role_menu_id = #{roleMenuId,jdbcType=BIGINT}
+        where rid = #{rid,jdbcType=BIGINT}
     </update>
 
     <update id="deleteRoleMenuByRid" parameterType="java.lang.Long" >
@@ -133,7 +130,7 @@
         insert into role_menu(<include refid="Base_Column_List" />)
         values
         <foreach collection="list" item="item" separator=",">
-            (#{item.roleMenuId},#{item.rid},#{item.mid},#{item.createUserNo},#{item.createTime},
+            (#{item.roleMenuId},#{item.rid},#{item.mids},#{item.createUserNo},#{item.createTime},
             #{item.updateUserNo},#{item.updateTime},#{item.isUse})
         </foreach>
     </insert>
@@ -142,13 +139,5 @@
         update role_menu
         set  is_use = 0
         where rid = #{rid,jdbcType=BIGINT}
-    </update>
-    <update id="updateRoleMenuBatch" parameterType="list">
-        update role_menu(mid,update_user_no, update_time)
-        values
-        <foreach collection="list" item="item" separator=",">
-            (#{item.mid,jdbcType=BIGINT},#{item.updateUserNo,jdbcType=BIGINT},#{item.updateTime,jdbcType=TIMESTAMP})
-            where rid = #{item.rid,jdbcType=BIGINT}
-        </foreach>
     </update>
 </mapper>

@@ -33,11 +33,11 @@ public interface IRoleMenuDao extends BaseDao<RoleMenuDO, Long> {
     int insertRoleMenu(RoleMenuDO roleMenuDO);
 
     /**
-     * 以ROLE_MENU_ID搜索权限
-     * @param roleMenuId
+     * 以RID搜索权限
+     * @param rid
      * @return
      */
-    RoleMenuDO getRoleMenuByRoleMenuId(Long roleMenuId);
+    RoleMenuDO getRoleMenuByRid(Long rid);
 
     /**
      * 更新权限信息
