@@ -6,6 +6,7 @@ import com.cmpay.lemon.framework.annotation.QueryBody;
 import com.cmpay.lemon.framework.data.DefaultRspDTO;
 import com.cmpay.lemon.framework.data.NoBody;
 import com.cmpay.lemon.framework.page.PageInfo;
+import com.cmpay.lemon.framework.security.SecurityUtils;
 import com.cmpay.yx.bo.MenuBO;
 import com.cmpay.yx.bo.RoleBO;
 import com.cmpay.yx.bo.UserQueryBO;
@@ -18,6 +19,7 @@ import org.apache.commons.lang.math.RandomUtils;
 import org.springframework.web.bind.annotation.*;
 
 import javax.annotation.Resource;
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -50,36 +52,49 @@ public class MenuController {
         return GenericRspDTO.newInstance(MsgEnum.SUCCESS,menuQueryRspDTO);
     }
 
-    @PostMapping("/insertMenu")
-    public DefaultRspDTO<NoBody> insertMenu(@RequestBody MenuDTO menuDTO) {
+    @PostMapping("/save")
+    public GenericRspDTO<NoBody> insertMenu(@RequestBody MenuDTO menuDTO) {
         // 随机生成rid, ID生成器在UserController使用过
-        Long randomId = RandomUtils.nextLong();
+        Long randomId = Long.valueOf(RandomUtils.nextInt());
 
         MenuDTO dto = menuDTO;
         MenuBO bo = new MenuBO();
         // 转换类型 交给service
         BeanUtils.copyProperties(bo,dto);
-
+        bo.setMid(randomId);
+        bo.setCreateUserNo(Long.valueOf(SecurityUtils.getLoginUserId()));
+        bo.setUpdateUserNo(Long.valueOf(SecurityUtils.getLoginUserId()));
+        bo.setCreateTime(LocalDateTime.now());
+        bo.setUpdateTime(LocalDateTime.now());
         menuService.insertMenu(bo);
-        return DefaultRspDTO.newSuccessInstance();
+        return GenericRspDTO.newInstance(MsgEnum.SUCCESS);
     }
 
-    @GetMapping("/deleteMenu/{mid}")
-    public DefaultRspDTO<NoBody> deleteMenu(@PathVariable Long mid) {
+    @DeleteMapping("/delete/{mid}")
+    public GenericRspDTO<NoBody> deleteMenu(@PathVariable Long mid) {
         // 假删除
         menuService.deleteMenu(mid);
-        return DefaultRspDTO.newSuccessInstance();
+        return GenericRspDTO.newInstance(MsgEnum.SUCCESS);
+    }
+
+    @GetMapping("/info/{mid}")
+    public GenericRspDTO<MenuRspDTO> getMenuByMid(@PathVariable Long mid) {
+        // 假删除
+        MenuBO menuByMid = menuService.getMenuByMid(mid);
+        MenuRspDTO menuRspDTO = new MenuRspDTO();
+        BeanUtils.copyProperties(menuRspDTO,menuByMid);
+        return GenericRspDTO.newInstance(MsgEnum.SUCCESS,menuRspDTO);
     }
 
 
-    @PostMapping("/updateMenu")
-    public DefaultRspDTO<NoBody> updateMenu(@RequestBody MenuDTO menuDTO) {
+    @PostMapping("/update")
+    public GenericRspDTO<NoBody> updateMenu(@RequestBody MenuDTO menuDTO) {
         MenuDTO dto = menuDTO;
         MenuBO bo = new MenuBO();
         // 转换类型 交给service
         BeanUtils.copyProperties(bo, dto);
         menuService.updateMenu(bo);
-        return DefaultRspDTO.newSuccessInstance();
+        return GenericRspDTO.newInstance(MsgEnum.SUCCESS);
     }
 
 

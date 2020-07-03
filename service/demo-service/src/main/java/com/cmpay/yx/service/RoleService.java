@@ -61,39 +61,4 @@ public interface RoleService {
      */
     List<RoleMenuDO> selectAllRoleMenu();
 
-    /**
-     * 以ROLE_MENU_ID搜索权限
-     * @param roleMenuId
-     * @return
-     */
-    RoleMenuBO getRoleMenuByRoleMenuId(Long roleMenuId);
-
-    /**
-     * 更新权限信息
-     * @param roleMenuBO
-     * @return
-     */
-    void updateRoleMenu(RoleMenuBO roleMenuBO);
-
-    /**
-     * 假删除权限
-     * @param roleMenuId
-     * @return
-     */
-    void deleteRoleMenu(Long roleMenuId);
-    ///
-
-    /**
-     * 批量插入角色菜单表
-     * @param ridList
-     * @return
-     */
-    int insertRoleMenuBatch(List<RoleMenuDO> ridList);
-
-    /**
-     * 批量删除跟此RID有关的所有菜单权限
-     * @param rid
-     * @return
-     */
-    int deleteRoleMenuBatch(Long rid);
 }

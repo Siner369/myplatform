@@ -116,10 +116,16 @@
         where role_menu_id = #{roleMenuId,jdbcType=BIGINT}
     </update>
 
-    <update id="deleteRoleMenu" parameterType="com.cmpay.yx.entity.RoleMenuDO" >
+    <update id="deleteRoleMenuByRid" parameterType="java.lang.Long" >
         update role_menu
-        set is_use = 0
-        where role_menu_id = #{roleMenuId,jdbcType=BIGINT}
+        set is_use = 0 where
+        rid = #{isUse,jdbcType=BIT}
+    </update>
+
+    <update id="deleteRoleMenuByMid" parameterType="java.lang.Long" >
+        update role_menu
+        set is_use = 0 where
+        mid = #{isUse,jdbcType=BIT}
     </update>
 
 
@@ -128,7 +134,7 @@
         values
         <foreach collection="list" item="item" separator=",">
             (#{item.roleMenuId},#{item.rid},#{item.mid},#{item.createUserNo},#{item.createTime},
-            #{item.updateUserNo},#{item.updateTime}#{item.isUse})
+            #{item.updateUserNo},#{item.updateTime},#{item.isUse})
         </foreach>
     </insert>
 

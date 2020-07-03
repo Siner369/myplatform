@@ -4,8 +4,10 @@ import com.cmpay.lemon.common.exception.BusinessException;
 import com.cmpay.lemon.common.utils.BeanUtils;
 import com.cmpay.yx.bo.MenuBO;
 import com.cmpay.yx.dao.IMenuDao;
+import com.cmpay.yx.dao.IRoleMenuDao;
 import com.cmpay.yx.dto.MenuDTO;
 import com.cmpay.yx.entity.MenuDO;
+import com.cmpay.yx.entity.RoleMenuDO;
 import com.cmpay.yx.enums.MsgEnum;
 import com.cmpay.yx.service.MenuService;
 import org.springframework.stereotype.Service;
@@ -27,6 +29,9 @@ public class MenuServiceImpl implements MenuService {
 
     @Resource
     private IMenuDao menuDao;
+
+    @Resource
+    private IRoleMenuDao roleMenuDao;
 
     @Override
     public List selectAllMenu() {
@@ -61,19 +66,6 @@ public class MenuServiceImpl implements MenuService {
         return mapList;
     }
 
-    /*public List<MenuDTO> buildMenu(List<MenuDTO> menuList, Long parentId){
-        List<MenuDTO> mList = new ArrayList<>();
-        for (MenuDTO menu : menuList){
-
-            if (menu.getSuperMenuId().equals(parentId)){
-                MenuDTO curr = menu;
-                curr.setChildren(buildMenu(menuList,menu.getMid()));
-                mList.add(curr);
-            }
-        }
-        return mList;
-    }*/
-
 
     @Override
     @Transactional(propagation = Propagation.REQUIRED, rollbackFor = Exception.class)
@@ -81,8 +73,7 @@ public class MenuServiceImpl implements MenuService {
         MenuDO menuDO = new MenuDO();
         MenuBO bo = menuBO;
         BeanUtils.copyProperties(menuDO,bo);
-        menuDO.setCreateTime(LocalDateTime.now());
-        menuDO.setUpdateTime(LocalDateTime.now());
+        menuDO.setIsUse(true);
         int i = menuDao.insertMenu(menuDO);
         if (i != 1) {
             BusinessException.throwBusinessException(MsgEnum.DB_INSERT_FAILED);
@@ -91,17 +82,30 @@ public class MenuServiceImpl implements MenuService {
 
     @Override
     public MenuBO getMenuByMid(Long mid) {
-        return null;
+        MenuDO menuByMid = menuDao.getMenuByMid(mid);
+        MenuBO menuBO = new MenuBO();
+        BeanUtils.copyProperties(menuBO,menuByMid);
+        return menuBO;
     }
 
     @Override
     public void updateMenu(MenuBO menuBO) {
-
+        MenuDO menuDO = new MenuDO();
+        BeanUtils.copyProperties(menuDO,menuBO);
+        int i = menuDao.updateMenu(menuDO);
+        if (i==0){
+            BusinessException.throwBusinessException(MsgEnum.DB_UPDATE_FAILED);
+        }
     }
 
     @Override
     public void deleteMenu(Long mid) {
+        int i = menuDao.deleteMenu(mid);
+        int j = roleMenuDao.deleteRoleMenuByMid(mid);
 
+        if (i==0){
+            BusinessException.throwBusinessException(MsgEnum.DB_DELETE_FAILED);
+        }
     }
 
     @Override

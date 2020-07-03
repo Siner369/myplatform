@@ -7,9 +7,7 @@
 package com.cmpay.yx.dao;
 
 import com.cmpay.lemon.framework.dao.BaseDao;
-import com.cmpay.yx.entity.MenuDO;
 import com.cmpay.yx.entity.RoleMenuDO;
-import com.cmpay.yx.entity.UserRoleDO;
 import org.apache.ibatis.annotations.Mapper;
 
 import java.util.List;
@@ -49,19 +47,26 @@ public interface IRoleMenuDao extends BaseDao<RoleMenuDO, Long> {
     int updateRoleMenu(RoleMenuDO roleMenuDO);
 
     /**
-     * 假删除权限
-     * @param roleMenuId
+     * 假删除权限,角色用
+     * @param rid
      * @return
      */
-    int deleteRoleMenu(Long roleMenuId);
+    int deleteRoleMenuByRid(Long rid);
+
+    /**
+     * 假删除权限,菜单用
+     * @param mid
+     * @return
+     */
+    int deleteRoleMenuByMid(Long mid);
     ///
 
     /**
      * 批量插入角色菜单表
-     * @param ridList
+     * @param tarList
      * @return
      */
-    int insertRoleMenuBatch(List<RoleMenuDO> ridList);
+    int insertRoleMenuBatch(List<RoleMenuDO> tarList);
 
     /**
      * 批量删除跟此RID有关的所有菜单权限
@@ -70,5 +75,4 @@ public interface IRoleMenuDao extends BaseDao<RoleMenuDO, Long> {
      */
     int deleteRoleMenuBatch(Long rid);
 
-    int updateRoleMenuBatch(List<RoleMenuDO> roleMenuDOList);
 }
