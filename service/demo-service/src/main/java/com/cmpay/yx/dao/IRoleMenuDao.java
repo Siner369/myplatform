@@ -55,10 +55,10 @@ public interface IRoleMenuDao extends BaseDao<RoleMenuDO, Long> {
 
     /**
      * 假删除权限,菜单用
-     * @param mid
+     * @param mids
      * @return
      */
-    int deleteRoleMenuByMid(Long mid);
+    int deleteRoleMenuByMid(String mids);
     ///
 
     /**

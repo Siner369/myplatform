@@ -96,7 +96,7 @@ public class UserController {
     }
 
     @PostMapping("/update")
-    public GenericRspDTO<UserInfoRspDTO> updateUser(UserInfoDTO userInfoDTO) {
+    public GenericRspDTO<UserInfoRspDTO> updateUser(@RequestBody UserInfoDTO userInfoDTO) {
         UserInfoBO bo = new UserInfoBO();
         BeanUtils.copyProperties(bo, userInfoDTO);
         userService.updateUser(bo);

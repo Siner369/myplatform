@@ -105,11 +105,14 @@ public class UserServiceImpl implements UserService {
         UserDO userDO = userDao.getUserByUid(uid);
         List<Long> ridList = new ArrayList<>();
         UserRoleDO userRole = userRoleDao.getUserRole(uid);
-        if (!"".equals(userRole.getRids())){
+        CharSequence c = "-";
+        if (!"".equals(userRole.getRids()) && userRole.getRids().contains(c)){
             String[] split = userRole.getRids().split("-");
             for (int i = 0; i < split.length; i++) {
                 ridList.add(Long.valueOf(split[i]));
             }
+        }else {
+            ridList.add(Long.valueOf(userRole.getRids()));
         }
         BeanUtils.copyProperties(bo,userDO);
         bo.setRidList(ridList);
@@ -126,8 +129,23 @@ public class UserServiceImpl implements UserService {
         int updateUser = userDao.updateUser(userDO);
         List<Long> ridList = userInfoBO.getRidList();
         UserRoleDO tarDO = userRoleDao.getUserRole(userInfoBO.getUid());
-        tarDO.setRids(StringUtils.join(ridList,"-"));
-        int updateUserRole = userRoleDao.update(tarDO);
+        int updateUserRole = 0;
+        if (tarDO==null){
+            UserRoleDO userRoleDO = new UserRoleDO();
+            userRoleDO.setUserRoleId(Long.valueOf(RandomUtils.nextInt()));
+            userRoleDO.setUid(userInfoBO.getUid());
+            userRoleDO.setRids(StringUtils.join(ridList,"-"));
+            userRoleDO.setCreateUserNo(1L);
+            userRoleDO.setUpdateUserNo(1L);
+            userRoleDO.setCreateTime(LocalDateTime.now());
+            userRoleDO.setUpdateTime(LocalDateTime.now());
+            userRoleDO.setIsUse(true);
+            updateUserRole = userRoleDao.insertUserRole(userRoleDO);
+        }else {
+            tarDO.setRids(StringUtils.join(ridList,"-"));
+            updateUserRole = userRoleDao.updateUserRole(tarDO);
+        }
+
         if (updateUserRole==0 || updateUser == 0) {
             BusinessException.throwBusinessException(MsgEnum.DB_UPDATE_FAILED);
         }
@@ -141,7 +159,7 @@ public class UserServiceImpl implements UserService {
     @Transactional(propagation = Propagation.REQUIRED, rollbackFor = Exception.class)
     public void deleteUser(List<Long> uidList) {
         int i = userDao.deleteUser(uidList);
-        if (i != 1) {
+        if (i == 0) {
             BusinessException.throwBusinessException(MsgEnum.DB_DELETE_FAILED);
         }
     }

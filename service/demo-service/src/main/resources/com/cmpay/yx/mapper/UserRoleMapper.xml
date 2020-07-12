@@ -86,20 +86,11 @@
         </trim>
     </insert>
 
-    <update id="update" parameterType="com.cmpay.yx.entity.UserRoleDO" >
+    <update id="updateUserRole" parameterType="com.cmpay.yx.entity.UserRoleDO" >
         update user_role
         <set >
-            <if test="uid != null" >
-                uid = #{uid,jdbcType=BIGINT},
-            </if>
             <if test="rids != null" >
-                rid = #{rids,jdbcType=BIGINT},
-            </if>
-            <if test="createUserNo != null" >
-                create_user_no = #{createUserNo,jdbcType=BIGINT},
-            </if>
-            <if test="createTime != null" >
-                create_time = #{createTime,jdbcType=TIMESTAMP},
+                rids = #{rids,jdbcType=VARCHAR},
             </if>
             <if test="updateUserNo != null" >
                 update_user_no = #{updateUserNo,jdbcType=BIGINT},
@@ -107,18 +98,15 @@
             <if test="updateTime != null" >
                 update_time = #{updateTime,jdbcType=TIMESTAMP},
             </if>
-            <if test="isUse != null" >
-                is_use = #{isUse,jdbcType=BIT},
-            </if>
         </set>
-        where user_role_id = #{userRoleId,jdbcType=BIGINT}
+        where uid = #{uid,jdbcType=BIGINT} and is_use = 1
     </update>
 
     <select id="find" resultMap="BaseResultMap" parameterType="com.cmpay.yx.entity.UserRoleDO" >
         select
         <include refid="Base_Column_List" />
         from user_role
-        <where >
+        <where>
             <if test="userRoleId != null" >
                 and user_role_id = #{userRoleId,jdbcType=BIGINT}
             </if>
@@ -145,7 +133,6 @@
             </if>
         </where>
     </select>
-
 
     <update id="deleteUserRoleBatch">
         update user_role

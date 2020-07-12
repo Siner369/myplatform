@@ -50,4 +50,12 @@ public interface IUserRoleDao extends BaseDao<UserRoleDO, Long> {
      */
     int insertUserRole(UserRoleDO userRoleDO);
 
+
+    /**
+     * 更新用户角色表
+     * @param userRoleDO
+     * @return
+     */
+    int updateUserRole(UserRoleDO userRoleDO);
+
 }

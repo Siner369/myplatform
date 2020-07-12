@@ -83,17 +83,25 @@ public class RoleServiceImpl implements RoleService {
         RoleBO bo = new RoleBO();
         RoleDO roleDO = roleDao.getRoleByRid(rid);
         RoleMenuDO roleMenuByRid = roleMenuDao.getRoleMenuByRid(rid);
-        String rids = roleMenuByRid.getMids();
-        List<Long> midList = new ArrayList<>();
-        BeanUtils.copyProperties(bo,roleDO);
-        CharSequence c = "-";
-        if (!"".equals(rids) && !rids.contains(c)){
-            String[] split = roleMenuByRid.getMids().split("-");
-            for (int i = 0; i < split.length; i++) {
-                midList.add(Long.valueOf(split[i]));
-            }
+        if (roleMenuByRid != null) {
+
         }
-        bo.setMidList(midList);
+
+            String rids = roleMenuByRid.getMids();
+            List<Long> midList = new ArrayList<>();
+            BeanUtils.copyProperties(bo,roleDO);
+            CharSequence c = "-";
+            if (!"".equals(rids) && rids.contains(c)){
+                String[] split = roleMenuByRid.getMids().split("-");
+                for (int i = 0; i < split.length; i++) {
+                    midList.add(Long.valueOf(split[i]));
+                }
+            }else {
+                midList.add(Long.valueOf(roleMenuByRid.getMids()));
+            }
+            bo.setMidList(midList);
+
+
         return bo;
     }
 

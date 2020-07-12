@@ -119,10 +119,10 @@
         rid = #{isUse,jdbcType=BIT}
     </update>
 
-    <update id="deleteRoleMenuByMid" parameterType="java.lang.Long" >
+    <update id="deleteRoleMenuByMid" parameterType="java.lang.String" >
         update role_menu
         set is_use = 0 where
-        mid = #{isUse,jdbcType=BIT}
+        mids = #{mids,jdbcType=VARCHAR}
     </update>
 
 

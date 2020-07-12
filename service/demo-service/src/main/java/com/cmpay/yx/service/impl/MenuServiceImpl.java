@@ -101,7 +101,7 @@ public class MenuServiceImpl implements MenuService {
     @Override
     public void deleteMenu(Long mid) {
         int i = menuDao.deleteMenu(mid);
-        int j = roleMenuDao.deleteRoleMenuByMid(mid);
+        int j = roleMenuDao.deleteRoleMenuByMid(mid+"");
 
         if (i==0){
             BusinessException.throwBusinessException(MsgEnum.DB_DELETE_FAILED);
